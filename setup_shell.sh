@@ -33,6 +33,6 @@ brew install cantino/mcfly/mcfly
 brew install pipx
 
 pipx install pls
-pipx ensureparh
+pipx ensurepath
 
 echo "Setup complete. Please restart your session to load changes."
