@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# Replace apt install with your package manager of choice
 sudo apt update
 sudo apt install -y zsh clang
 chsh -s /usr/bin/zsh
