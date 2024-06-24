@@ -19,6 +19,23 @@ sudo systemctl disable gdm
 sudo systemctl enable sddm
 
 echo "Installing software"
+sudo dnf install -y \
+  guake \
+  flatseal \
+  input-remapper \
+  lm_sensors \
+  dnf-plugins-core \
+  coolercontrol \
+  celluloid \
+  virt-manager \
+  kate \
+  darktable \
+  nomacs \
+  spacenavd \
+  openrgb \
+  ufw \
+  firejail
+
 flatpak install -y \
   com.vivaldi.Vivaldi \
   com.brave.Browser \
@@ -43,22 +60,6 @@ flatpak install -y \
   com.obsproject.Studio \
   org.strawberrymusicplayer.strawberry \
   org.audacityteam.Audacity
-
-sudo dnf install -y \
-  guake \
-  input-remapper \
-  lm_sensors \
-  dnf-plugins-core \
-  coolercontrol \
-  celluloid \
-  virt-manager \
-  kate \
-  darktable \
-  nomacs \
-  spacenavd \
-  openrgb \
-  ufw \
-  firejail
 
 echo "Setting up firewall"
 sudo ufw reset                # Delete all existing rules
@@ -96,7 +97,6 @@ PARTUUID="7046eacd-7ed6-4005-b237-74e87ae708b2"   /mnt/windows    ntfs    uid=10
 # NAS shares
 //memoryalpha.home.local/media                    /mnt/media      cifs    credentials=/home/sorcerer/.smbcredentials,uid=1000,gid=1000,file_mode=0775,dir_mode=0775,_netdev,iocharset=utf8,noperm   0 0
 //memoryalpha.home.local/data                     /mnt/data       cifs    credentials=/home/sorcerer/.smbcredentials,uid=1000,gid=1000,file_mode=0775,dir_mode=0775,_netdev,iocharset=utf8,noperm   0 0
-//memoryalpha.home.local/media                    /home/sorcerer/.var/app/org.jdownloader.JDownloader/downloads       cifs    credentials=/home/sorcerer/.smbcredentials,uid=1000,gid=1000,file_mode=0775,dir_mode=0775,_netdev,iocharset=utf8,noperm   0 0
 EOF
 
 echo "Mounting partitions"
