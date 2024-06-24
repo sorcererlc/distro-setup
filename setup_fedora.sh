@@ -45,6 +45,7 @@ flatpak install -y \
   org.audacityteam.Audacity
 
 sudo dnf install -y \
+  guake \
   input-remapper \
   lm_sensors \
   dnf-plugins-core \
