@@ -1,27 +1,76 @@
 #!/usr/bin/env bash
 
-# Replace apt install with your package manager of choice
-sudo apt update
-sudo apt install -y zsh clang
+setup_fedora()
+{
+    sudo dnf update -y
+    sudo dnf install -y \
+        zsh \
+        clang \
+        bat \
+        tldr \
+        progress \
+        htop
+}
+
+setup_debian()
+{
+    sudo apt update
+    sudo apt install -y zsh clang
+}
+
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    OS=$NAME
+    VER=$VERSION_ID
+fi
+
+echo "Detected $OS $VER"
+
+case $OS in
+    "Fedora Linux")
+    setup_fedora
+    ;;
+    "Debian GNU/Linux")
+    setup_debian
+    ;;
+    "Ubuntu")
+    setup_debian
+    ;;
+    *) echo "$OS is not yet supported. Feel free to make a pull request and add support for your distro.";;
+esac
+
+echo "Changing to zsh shell for $USER"
 chsh -s /usr/bin/zsh
 
-touch ~/.zshrc
-echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zshrc
-echo 'source /home/linuxbrew/.linuxbrew/share/antigen/antigen.zsh' >> ~/.zshrc
-echo 'export THEME_DIR=$(brew --prefix oh-my-posh)/themes' >> ~/.zshrc
-echo 'export OMP_THEME="quick-term"' >> ~/.zshrc
-echo 'eval "$(oh-my-posh init zsh --config ${THEME_DIR}/${OMP_THEME}.omp.json)"' >> ~/.zshrc
-echo 'eval "$(mcfly init zsh)"' >> ~/.zshrc
-echo 'alias ls="pls -a -d perms -d user -d group -d size -d mtime -d git"' >> ~/.zshrc
-echo 'export ZSH_AUTOSUGGEST_STRATEGY=(history completion)' >> ~/.zshrc
-echo 'antigen bundle zsh-users/zsh-completions' >> ~/.zshrc
-echo 'antigen bundle zsh-users/zsh-autosuggestions' >> ~/.zshrc
-echo 'antigen bundle zsh-users/zsh-syntax-highlighting' >> ~/.zshrc
-echo 'antigen apply' >> ~/.zshrc
-echo 'HISTFILE=~/.zsh_history' >> ~/.zshrc
-echo 'HISTSIZE=10000' >> ~/.zshrc
-echo 'SAVEHIST=10000' >> ~/.zshrc
-echo 'setopt appendhistory' >> ~/.zshrc
+touch ~/.zsh_history
+cat >> ~/.zshrc<< EOF
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+source /home/linuxbrew/.linuxbrew/share/antigen/antigen.zsh
+
+THEME_DIR=$(brew --prefix oh-my-posh)/themes
+OMP_THEME="quick-term"
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+
+eval "$(oh-my-posh init zsh --config $THEME_DIR/$OMP_THEME.omp.json)"
+eval "$(mcfly init zsh)"
+
+alias ls="pls -a -d perms -d user -d group -d size -d mtime -d git"
+alias cp="cp -i"
+alias cat="bat"
+alias codium="flatpak run com.vscodium.codium "
+
+antigen bundle zsh-users/zsh-completions
+antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen apply
+
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt appendhistory
+
+export PATH="$PATH:$HOME/.local/bin"
+EOF
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
@@ -34,6 +83,5 @@ brew install cantino/mcfly/mcfly
 brew install pipx
 
 pipx install pls
-pipx ensurepath
 
 echo "Setup complete. Please restart your session to load changes."
