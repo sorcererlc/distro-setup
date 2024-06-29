@@ -9,6 +9,7 @@ echo "Installing NVIDIA driver"
 sudo dnf install -y akmod-nvidia xorg-x11-drv-nvidia-cuda
 
 echo "Installing KDE Plasma"
+# sudo dnf swap @gnome-desktop @kde-desktopdnf 
 sudo dnf install -y \
   @kde-desktop-environment \
   plasma-workspace-x11 \
@@ -27,6 +28,7 @@ sudo dnf install -y \
   dnf-plugins-core \
   coolercontrol \
   celluloid \
+  vlc \
   virt-manager \
   kate \
   darktable \
@@ -34,14 +36,16 @@ sudo dnf install -y \
   spacenavd \
   openrgb \
   ufw \
-  firejail
+  firejail \
+  remmina \
+  mc
 
 flatpak install -y \
   com.vivaldi.Vivaldi \
   com.brave.Browser \
   com.spotify.Client \
   com.valvesoftware.Steam \
-  org.telegram.desktop \
+  io.github.tdesktop_x64.TDesktop \
   com.discordapp.Discord \
   tv.plex.PlexDesktop \
   com.vscodium.codium \
@@ -59,7 +63,11 @@ flatpak install -y \
   org.jdownloader.JDownloader \
   com.obsproject.Studio \
   org.strawberrymusicplayer.strawberry \
-  org.audacityteam.Audacity
+  org.audacityteam.Audacity \
+  io.gitlab.news_flash.NewsFlash
+
+echo "Setting up SELinux"
+sudo setsebool -P allow_ypbind=1
 
 echo "Setting up firewall"
 sudo ufw reset                # Delete all existing rules

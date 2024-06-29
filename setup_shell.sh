@@ -15,7 +15,13 @@ setup_fedora()
 setup_debian()
 {
     sudo apt update
-    sudo apt install -y zsh clang
+    sudo apt install -y \
+        zsh \
+        clang \
+        bat \
+        tldr \
+        progress \
+        htop
 }
 
 if [ -f /etc/os-release ]; then
