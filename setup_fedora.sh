@@ -7,6 +7,8 @@ sudo dnf install -y \
 sudo dnf copr enable -y codifryed/CoolerControl
 sudo dnf update -y
 
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
 echo "Installing NVIDIA driver"
 sudo dnf install -y \
   akmod-nvidia
