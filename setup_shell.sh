@@ -2,14 +2,14 @@
 
 setup_fedora()
 {
-    sudo dnf update -y
     sudo dnf install -y \
         zsh \
         clang \
         bat \
         tldr \
         progress \
-        htop
+        htop \
+        pipx
 }
 
 setup_debian()
@@ -21,7 +21,8 @@ setup_debian()
         bat \
         tldr \
         progress \
-        htop
+        htop \
+        pipx
 }
 
 if [ -f /etc/os-release ]; then
@@ -48,10 +49,24 @@ esac
 echo "Changing to zsh shell for $USER"
 chsh -s /usr/bin/zsh
 
+mkdir -p ~/.shell
+
+echo "Installing Oh My Posh"
+curl -s https://ohmyposh.dev/install.sh | bash -s
+
+echo "Installing antigen"
+curl -L git.io/antigen > ~/.shell/antigen.zsh
+
+echo "Installing mcfly"
+curl -LSfs https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh | sudo sh -s -- --git cantino/mcfly
+
+pipx install pls
+
+echo "Creating .zsh_history and .zshrc"
+
 touch ~/.zsh_history
 cat >> ~/.zshrc<< EOF
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-source /home/linuxbrew/.linuxbrew/share/antigen/antigen.zsh
+source $HOME/.shell/antigen.zsh
 
 THEME_DIR=$(brew --prefix oh-my-posh)/themes
 OMP_THEME="quick-term"
@@ -82,17 +97,5 @@ bindkey '^[[H' beginning-of-line
 bindkey '^[[F' end-of-line
 bindkey '^[[3~' delete-char
 EOF
-
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
-brew tap cantino/mcfly
-
-brew install antigen
-brew install jandedobbeleer/oh-my-posh/oh-my-posh
-brew install cantino/mcfly/mcfly
-brew install pipx
-
-pipx install pls
 
 echo "Setup complete. Please restart your session to load changes."

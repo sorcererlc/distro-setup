@@ -12,15 +12,15 @@ sudo dnf install -y \
   akmod-nvidia
   # xorg-x11-drv-nvidia-cuda
 
-echo "Installing KDE Plasma"
-sudo dnf swap @gnome-desktop @kde-desktop
-sudo dnf install -y \
-  sddm \
+# echo "Installing KDE Plasma"
+# sudo dnf swap @gnome-desktop @kde-desktop
+# sudo dnf install -y \
+#   sddm \
   # plasma-workspace-x11
 
-echo "Switching desktop manager to sddm"
-sudo systemctl disable gdm
-sudo systemctl enable sddm
+# echo "Switching desktop manager to sddm"
+# sudo systemctl disable gdm
+# sudo systemctl enable sddm
 
 echo "Installing software"
 sudo dnf install -y \
