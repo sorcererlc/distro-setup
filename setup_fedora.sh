@@ -1,19 +1,22 @@
 #!/usr/bin/env bash
 
-echo "Updating repositories"
-sudo dnf install -y "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
+echo "Installing and updating repositories"
+sudo dnf install -y \
+  "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
+  "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
 sudo dnf copr enable -y codifryed/CoolerControl
 sudo dnf update -y
 
 echo "Installing NVIDIA driver"
-sudo dnf install -y akmod-nvidia xorg-x11-drv-nvidia-cuda
+sudo dnf install -y \
+  akmod-nvidia
+  # xorg-x11-drv-nvidia-cuda
 
 echo "Installing KDE Plasma"
-# sudo dnf swap @gnome-desktop @kde-desktopdnf 
+sudo dnf swap @gnome-desktop @kde-desktop
 sudo dnf install -y \
-  @kde-desktop-environment \
-  plasma-workspace-x11 \
-  sddm
+  sddm \
+  # plasma-workspace-x11
 
 echo "Switching desktop manager to sddm"
 sudo systemctl disable gdm
@@ -21,6 +24,7 @@ sudo systemctl enable sddm
 
 echo "Installing software"
 sudo dnf install -y \
+  steam \
   guake \
   flatseal \
   input-remapper \
@@ -38,13 +42,15 @@ sudo dnf install -y \
   ufw \
   firejail \
   remmina \
-  mc
+  mc \
+  winetricks \
+  android-tools \
+  neovim
 
 flatpak install -y \
   com.vivaldi.Vivaldi \
   com.brave.Browser \
   com.spotify.Client \
-  com.valvesoftware.Steam \
   io.github.tdesktop_x64.TDesktop \
   com.discordapp.Discord \
   tv.plex.PlexDesktop \
@@ -58,16 +64,14 @@ flatpak install -y \
   rest.insomnia.Insomnia \
   org.openttd.OpenTTD \
   io.openrct2.OpenRCT2 \
-  io.github.TransmissionRemoteGtk \
+  org.equeim.Tremotesf \
   org.freedesktop.Platform.VulkanLayer.MangoHud \
   org.jdownloader.JDownloader \
   com.obsproject.Studio \
   org.strawberrymusicplayer.strawberry \
   org.audacityteam.Audacity \
-  io.gitlab.news_flash.NewsFlash
-
-echo "Setting up SELinux"
-sudo setsebool -P allow_ypbind=1
+  io.gitlab.news_flash.NewsFlash \
+  com.slack.Slack
 
 echo "Setting up firewall"
 sudo ufw reset                # Delete all existing rules
@@ -82,34 +86,31 @@ sudo sensors-detect
 echo "Setting up service configuration"
 sudo cp -r /home/sorcerer/.services/etc/* /etc
 
+echo "Installing auto-cpufreq"
+# cd /home/sorcerer/Programs
+# git clone https://github.com/AdnanHodzic/auto-cpufreq.git
+# cd auto-cpufreq
+cd /home/sorcerer/Programs/auto-cpufreq
+git pull
+sudo ./auto-cpufreq-installer
+
 echo "Enabling and starting services"
+sudo systemctl enable --now sshd
 sudo systemctl enable --now input-remapper
 sudo systemctl enable --now coolercontrold
 sudo systemctl enable --now spacenavd
+sudo systemctl enable --now auto-cpufreq
 
 echo "Creating mount directories"
-sudo mkdir -p /mnt/storage
-sudo mkdir -p /mnt/sata
-sudo mkdir -p /mnt/windows
 sudo mkdir -p /mnt/media
 sudo mkdir -p /mnt/data
+#sudo mkdir -p /mnt/windows
+#sudo mkdir -p /mnt/winstorage
 
 echo "Adding mount points to /etc/fstab"
-cat >> /etc/fstab<< EOF
-
-# Local partitions
-PARTUUID="550393b3-fbca-4aea-a1dd-13512a81a234"   /mnt/storage    ntfs    uid=1000,gid=1000,nofail 0 2
-PARTUUID="f2cfc843-afed-4aaf-a729-e237f4ab2d97"   /mnt/sata       ntfs    uid=1000,gid=1000,nofail 0 2
-PARTUUID="7046eacd-7ed6-4005-b237-74e87ae708b2"   /mnt/windows    ntfs    uid=1000,gid=1000,nofail 0 2
-
-# NAS shares
-//memoryalpha.home.local/media                    /mnt/media      cifs    credentials=/home/sorcerer/.smbcredentials,uid=1000,gid=1000,file_mode=0775,dir_mode=0775,_netdev,iocharset=utf8,noperm   0 0
-//memoryalpha.home.local/data                     /mnt/data       cifs    credentials=/home/sorcerer/.smbcredentials,uid=1000,gid=1000,file_mode=0775,dir_mode=0775,_netdev,iocharset=utf8,noperm   0 0
-EOF
+sudo echo $'\n\n# NAS shares' >> /etc/fstab
+sudo echo "//memoryalpha.home.local/media  /mnt/media  cifs  credentials=/home/sorcerer/.smbcredentials,uid=1000,gid=1000,file_mode=0775,dir_mode=0775,_netdev,iocharset=utf8,noperm  0 0" >> /etc/fstab
+sudo echo "//memoryalpha.home.local/data   /mnt/data   cifs  credentials=/home/sorcerer/.smbcredentials,uid=1000,gid=1000,file_mode=0775,dir_mode=0775,_netdev,iocharset=utf8,noperm  0 0" >> /etc/fstab
 
 echo "Mounting partitions"
 sudo mount -a
-
-echo "Setting up shell"
-chmod +x setup_shell.sh
-./setup_shell.sh

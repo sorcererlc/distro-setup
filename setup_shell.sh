@@ -76,6 +76,11 @@ SAVEHIST=10000
 setopt appendhistory
 
 export PATH="$PATH:$HOME/.local/bin"
+
+# Key Bindings
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
+bindkey '^[[3~' delete-char
 EOF
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
