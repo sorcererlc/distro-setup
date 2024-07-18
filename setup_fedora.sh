@@ -52,9 +52,8 @@ sudo dnf install -y \
 flatpak install -y \
   com.vivaldi.Vivaldi \
   com.brave.Browser \
-  com.spotify.Client \
   io.github.tdesktop_x64.TDesktop \
-  com.discordapp.Discord \
+  io.github.spacingbat3.webcord \
   tv.plex.PlexDesktop \
   com.vscodium.codium \
   com.github.Matoking.protontricks \
@@ -102,6 +101,11 @@ sudo systemctl enable --now input-remapper
 sudo systemctl enable --now coolercontrold
 sudo systemctl enable --now spacenavd
 sudo systemctl enable --now auto-cpufreq
+
+echo "Setting up udev rules"
+# Vial
+export USER_GID=`id -g`; sudo --preserve-env=USER_GID sh -c 'echo "KERNEL==\"hidraw*\", SUBSYSTEM==\"hidraw\", ATTRS{serial}==\"*vial:f64c2b3c*\", MODE=\"0660\", GROUP=\"$USER_GID\", TAG+=\"uaccess\", TAG+=\"udev-acl\"" > /etc/udev/rules.d/99-vial.rules && udevadm control --reload'
+sudo udevadm trigger
 
 echo "Creating mount directories"
 sudo mkdir -p /mnt/media

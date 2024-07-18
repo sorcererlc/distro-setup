@@ -47,20 +47,7 @@ case $OS in
 esac
 
 echo "Changing to zsh shell for $USER"
-chsh -s /usr/bin/zsh
-
-mkdir -p ~/.shell
-
-echo "Installing Oh My Posh"
-curl -s https://ohmyposh.dev/install.sh | bash -s
-
-echo "Installing antigen"
-curl -L git.io/antigen > ~/.shell/antigen.zsh
-
-echo "Installing mcfly"
-curl -LSfs https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh | sudo sh -s -- --git cantino/mcfly
-
-pipx install pls
+chsh -s $(which zsh)
 
 echo "Creating .zsh_history and .zshrc"
 
@@ -90,12 +77,25 @@ HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
 
-export PATH="$PATH:$HOME/.local/bin"
+export PATH="\$PATH:$HOME/.local/bin"
 
 # Key Bindings
 bindkey '^[[H' beginning-of-line
 bindkey '^[[F' end-of-line
 bindkey '^[[3~' delete-char
 EOF
+
+mkdir -p ~/.shell
+
+echo "Installing Oh My Posh"
+curl -s https://ohmyposh.dev/install.sh | bash -s
+
+echo "Installing antigen"
+curl -L git.io/antigen > ~/.shell/antigen.zsh
+
+echo "Installing mcfly"
+curl -LSfs https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh | sudo sh -s -- --git cantino/mcfly
+
+pipx install pls
 
 echo "Setup complete. Please restart your session to load changes."
