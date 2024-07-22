@@ -8,7 +8,8 @@ setup_fedora()
         tldr \
         progress \
         htop \
-        pipx
+        pipx \
+        unzip
 }
 
 setup_arch()
@@ -19,7 +20,8 @@ setup_arch()
         bat \
         tldr \
         progress \
-        htop
+        htop \
+        unzip
 }
 
 setup_debian()
@@ -31,7 +33,8 @@ setup_debian()
         tldr \
         progress \
         htop \
-        pipx
+        pipx \
+        unzip
 }
 
 if [ -f /etc/os-release ]; then
@@ -68,7 +71,7 @@ cat >> $HOME/.zshrc<< EOF
 source $HOME/.shell/antigen.zsh
 
 THEME_DIR=$HOME/.cache/oh-my-posh/themes
-OMP_THEME="quick-term"
+OMP_THEME="powerlevel10k_classic"
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 export PATH="$PATH:$HOME/.local/bin"
