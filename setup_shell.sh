@@ -4,7 +4,6 @@ setup_fedora()
 {
     sudo dnf install -y \
         zsh \
-        clang \
         bat \
         tldr \
         progress \
@@ -12,12 +11,22 @@ setup_fedora()
         pipx
 }
 
+setup_arch()
+{
+    sudo pacman -Syu
+    sudo pacman -S \
+        zsh \
+        bat \
+        tldr \
+        progress \
+        htop
+}
+
 setup_debian()
 {
     sudo apt update
     sudo apt install -y \
         zsh \
-        clang \
         bat \
         tldr \
         progress \
@@ -37,6 +46,9 @@ case $OS in
     "Fedora Linux")
     setup_fedora
     ;;
+    "Arch Linux")
+    setup_arch
+    ;;
     "Debian GNU/Linux")
     setup_debian
     ;;
@@ -51,13 +63,15 @@ chsh -s $(which zsh)
 
 echo "Creating .zsh_history and .zshrc"
 
-touch ~/.zsh_history
-cat >> ~/.zshrc<< EOF
+touch $HOME/.zsh_history
+cat >> $HOME/.zshrc<< EOF
 source $HOME/.shell/antigen.zsh
 
-THEME_DIR=$(brew --prefix oh-my-posh)/themes
+THEME_DIR=$HOME/.cache/oh-my-posh/themes
 OMP_THEME="quick-term"
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+
+export PATH="$PATH:$HOME/.local/bin"
 
 eval "$(oh-my-posh init zsh --config $THEME_DIR/$OMP_THEME.omp.json)"
 eval "$(mcfly init zsh)"
@@ -76,8 +90,6 @@ HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
-
-export PATH="\$PATH:$HOME/.local/bin"
 
 # Key Bindings
 bindkey '^[[H' beginning-of-line

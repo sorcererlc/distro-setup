@@ -47,7 +47,8 @@ sudo dnf install -y \
   mc \
   winetricks \
   android-tools \
-  neovim
+  neovim \
+  owncloud-client
 
 flatpak install -y \
   com.vivaldi.Vivaldi \
