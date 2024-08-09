@@ -87,11 +87,3 @@ echo "Installing mcfly"
 curl -LSfs https://raw.githubusercontent.com/cantino/mcfly/master/ci/install.sh | sudo sh -s -- --git cantino/mcfly
 
 pipx install pls
-
-read -p "Setup complete. You must restart your session for the changes to apply. Do you want to logout now? (y/n)" proceed
-if [ "$proceed" != "y" ]; then
-    echo "Logout skipped."
-    exit 0
-fi
-
-logout
