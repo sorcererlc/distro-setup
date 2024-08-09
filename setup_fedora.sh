@@ -7,25 +7,16 @@ sudo dnf install -y \
 sudo dnf copr enable -y codifryed/CoolerControl
 sudo dnf update -y
 
-flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-
 echo "Installing NVIDIA driver"
 sudo dnf install -y \
-  akmod-nvidia
-  # xorg-x11-drv-nvidia-cuda
-
-# echo "Installing KDE Plasma"
-# sudo dnf swap @gnome-desktop @kde-desktop
-# sudo dnf install -y \
-#   sddm \
-  # plasma-workspace-x11
-
-# echo "Switching desktop manager to sddm"
-# sudo systemctl disable gdm
-# sudo systemctl enable sddm
+  akmod-nvidia \
+  libva \
+  libva-nvidia-driver
+# sudo dnf install -y xorg-x11-drv-nvidia-cuda
 
 echo "Installing software"
 sudo dnf install -y \
+  flatpak \
   steam \
   guake \
   flatseal \
@@ -50,6 +41,8 @@ sudo dnf install -y \
   neovim \
   owncloud-client \
   zoxide
+
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 flatpak install -y \
   com.vivaldi.Vivaldi \
@@ -87,13 +80,13 @@ echo "Detecting hardware sensors"
 sudo sensors-detect
 
 echo "Setting up service configuration"
-sudo cp -r /home/sorcerer/.services/etc/* /etc
+sudo cp -r $HOME/.services/etc/* /etc
 
 echo "Installing auto-cpufreq"
-# cd /home/sorcerer/Programs
+# cd $HOME/Programs
 # git clone https://github.com/AdnanHodzic/auto-cpufreq.git
 # cd auto-cpufreq
-cd /home/sorcerer/Programs/auto-cpufreq
+cd $HOME/Programs/auto-cpufreq
 git pull
 sudo ./auto-cpufreq-installer
 
@@ -115,10 +108,19 @@ sudo mkdir -p /mnt/data
 #sudo mkdir -p /mnt/windows
 #sudo mkdir -p /mnt/winstorage
 
+sudo chown -R $USER:$USER /mnt/*
+
 echo "Adding mount points to /etc/fstab"
-sudo echo $'\n\n# NAS shares' >> /etc/fstab
-sudo echo "//memoryalpha.home.local/media  /mnt/media  cifs  credentials=/home/sorcerer/.smbcredentials,uid=1000,gid=1000,file_mode=0775,dir_mode=0775,_netdev,iocharset=utf8,noperm  0 0" >> /etc/fstab
-sudo echo "//memoryalpha.home.local/data   /mnt/data   cifs  credentials=/home/sorcerer/.smbcredentials,uid=1000,gid=1000,file_mode=0775,dir_mode=0775,_netdev,iocharset=utf8,noperm  0 0" >> /etc/fstab
+echo $'\n\n# NAS shares' | sudo tee -a /etc/fstab
+echo "//memoryalpha.home.local/media  /mnt/media  cifs  credentials=$HOME/.smbcredentials,uid=1000,gid=1000,file_mode=0775,dir_mode=0775,_netdev,iocharset=utf8,noperm  0 0" | sudo tee -a /etc/fstab
+echo "//memoryalpha.home.local/data   /mnt/data   cifs  credentials=$HOME/.smbcredentials,uid=1000,gid=1000,file_mode=0775,dir_mode=0775,_netdev,iocharset=utf8,noperm  0 0" | sudo tee -a /etc/fstab
 
 echo "Mounting partitions"
 sudo mount -a
+
+# mkdir -p $HOME/repo
+# cd $HOME/repo
+# git clone https://github.com/JaKooLit/Fedora-Hyprland.git
+# cd Fedora-Hyprland
+# chmod +x install.sh
+# ./install.sh
