@@ -4,7 +4,7 @@ if [[ ! -f "${HOME}/.zsh/zgenom/zgenom.zsh" ]]; then
 fi
 source "${HOME}/.zsh/zgenom/zgenom.zsh"
 
-if [ !-f $HOME/.zsh_history ] then
+if [ ! -f $HOME/.zsh_history ]; then
   touch $HOME/.zsh_history
 fi
 
@@ -20,7 +20,7 @@ export PATH="$PATH:$HOME/.local/bin"
 export MANGOHUD=1
 export TERM=kitty
 export LC_TIME=en_GB.UTF-8
-export EDITOR"$(which nvim)"
+export EDITOR="$(which nvim)"
 
 # Command history config
 HISTFILE=~/.zsh_history
