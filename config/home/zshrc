@@ -18,7 +18,7 @@ source $HOME/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 export PATH="$PATH:$HOME/.local/bin"
 export MANGOHUD=1
-export TERM=kitty
+export TERM=alacritty
 export LC_TIME=en_GB.UTF-8
 export EDITOR="$(which nvim)"
 
@@ -45,7 +45,7 @@ fi
 
 
 # Alias all the things
-alias ls="pls -a -d perms -d user -d group -d size -d mtime -d git"
+alias ls="exa -lh -g --time-style=long-iso --git --icons"
 alias cp="cpg -g"
 alias mv="mvg -g"
 alias cat="bat"
