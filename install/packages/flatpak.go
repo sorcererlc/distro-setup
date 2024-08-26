@@ -1,8 +1,10 @@
-package helper
+package packages
 
 import (
 	"fmt"
 	"os"
+	"setup/helper"
+	"setup/types"
 	"strings"
 
 	"gopkg.in/yaml.v3"
@@ -10,7 +12,7 @@ import (
 
 type FlatpakHelper struct {
 	Cwd    string
-	Config *Config
+	Config *types.Config
 	Repos  struct {
 		Base []string `yaml:"base"`
 	}
@@ -22,7 +24,7 @@ type FlatpakHelper struct {
 	}
 }
 
-func NewFlatpakHelper(c *Config) (*FlatpakHelper, error) {
+func NewFlatpakHelper(c *types.Config) (*FlatpakHelper, error) {
 	var err error
 	f := FlatpakHelper{
 		Config: c,
@@ -53,13 +55,13 @@ func (f *FlatpakHelper) loadPackages() error {
 func (f *FlatpakHelper) installPackageGroup(g []string) error {
 	fmt.Printf("Installing Flatpak packages %s\n", strings.Join(g, ", "))
 
-	c := Cmd{
+	c := helper.Cmd{
 		Bin:  "flatpak",
 		Args: []string{"install", "-y"},
 	}
 	c.Args = append(c.Args, g...)
 
-	err := ExecuteCommand(c)
+	err := helper.ExecuteCommand(c)
 	if err != nil {
 		fmt.Printf("Error installing Flatpak packages. Aborting setup.\n%s", err.Error())
 		return err
@@ -74,11 +76,9 @@ func (f *FlatpakHelper) InstallPackages() error {
 		return nil
 	}
 
-	if f.Config.Flatpak.Packages.Base {
-		err := f.installPackageGroup(f.Packages.Base)
-		if err != nil {
-			return err
-		}
+	err = f.installPackageGroup(f.Packages.Base)
+	if err != nil {
+		return err
 	}
 	if f.Config.Flatpak.Packages.Devel {
 		err := f.installPackageGroup(f.Packages.Devel)
@@ -110,13 +110,13 @@ func (f *FlatpakHelper) InstallRepos() error {
 
 	err = yaml.Unmarshal(fs, &f.Repos)
 
-	c := Cmd{
+	c := helper.Cmd{
 		Bin:  "flatpak",
 		Args: []string{"remote-add", "--if-not-exists"},
 	}
 	c.Args = append(c.Args, f.Repos.Base...)
 
-	err = ExecuteCommand(c)
+	err = helper.ExecuteCommand(c)
 	if err != nil {
 		return nil
 	}

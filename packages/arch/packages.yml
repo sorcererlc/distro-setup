@@ -34,3 +34,5 @@ aur:
   - spacenavd
   - auto-cpufreq
   - advcmpv
+
+aur_extras:

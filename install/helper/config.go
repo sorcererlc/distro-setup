@@ -2,72 +2,31 @@ package helper
 
 import (
 	"os"
+	"setup/log"
+	"setup/types"
 
 	"gopkg.in/yaml.v3"
 )
 
-type Config struct {
-	Options struct {
-		WindowManager  string `yaml:"window_manager"`
-		GlobalMangoHud bool   `yaml:"global_mango_hud"`
-	} `yaml:"options"`
-	Packages struct {
-		Base      bool `yaml:"base"`
-		Nvidia    bool `yaml:"nvidia"`
-		Sddm      bool `yaml:"sddm"`
-		Bluetooth bool `yaml:"bluetooth"`
-		Extras    bool `yaml:"extras"`
-		Dotfiles  bool `yaml:"dotfiles"`
-	} `yaml:"main"`
-	Flatpak struct {
-		Packages struct {
-			Base   bool `yaml:"base"`
-			Devel  bool `yaml:"devel"`
-			Extras bool `yaml:"extras"`
-			Misc   bool `yaml:"misc"`
-		} `yaml:"packages"`
-	} `yaml:"flatpak"`
-}
+func GetConfig(e *types.Environment) (*types.Config, error) {
+	l := log.NewLog("config.log")
+	conf := types.Config{}
 
-func LoadCongig() (*Config, error) {
-	conf := Config{}
-
-	c, err := os.Getwd()
-	if err != nil {
-		println("Error reading CWD")
-		return nil, err
-	}
-
-	fs := c + "/config.yml"
-	println("Loading config file " + c)
+	fs := e.Cwd + "/config.yml"
+	l.Info("Loading config file", fs)
 
 	f, err := os.ReadFile(fs)
 	if err != nil {
-		println("Error loading config file" + err.Error())
+		l.Error("Error loading config file", err.Error())
 		return nil, err
 	}
+	println(string(f))
 
 	err = yaml.Unmarshal(f, &conf)
 	if err != nil {
-		println("Error decoding config file" + err.Error())
+		l.Error("Error decoding config file", err.Error())
 		return nil, err
 	}
 
 	return &conf, nil
-}
-
-func SetupDistro(id string) error {
-	switch id {
-	case "fedora":
-		break
-	case "arch":
-		break
-	}
-
-	return nil
-}
-
-func SetupDotfiles(id string) error {
-
-	return nil
 }

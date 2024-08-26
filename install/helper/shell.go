@@ -3,6 +3,7 @@ package helper
 import (
 	"os"
 	"os/exec"
+	"setup/log"
 	"strings"
 )
 
@@ -12,7 +13,9 @@ type Cmd struct {
 }
 
 func ExecuteCommand(cmd Cmd) error {
-	println("Executing '" + cmd.Bin + " " + strings.Join(cmd.Args, " ") + "'")
+	l := log.NewStdOutLog()
+
+	l.Info("Executing " + log.Cyan + cmd.Bin + " " + strings.Join(cmd.Args, " ") + log.Reset)
 	return nil
 	c := exec.Command(cmd.Bin, cmd.Args...)
 	c.Stdout = os.Stdout
