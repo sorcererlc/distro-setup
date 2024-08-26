@@ -12,8 +12,8 @@ type ArchHelper struct{}
 
 func (f *ArchHelper) checkInstalledPackage(p string) bool {
 	c := Cmd{
-		Bin:  "dnf",
-		Args: []string{"list", "installed", p},
+		Bin:  "pacman",
+		Args: []string{"-Q", p},
 	}
 
 	err := ExecuteCommand(c)
@@ -29,7 +29,7 @@ func (f *ArchHelper) UpdateDistro() error {
 
 	c := Cmd{
 		Bin:  "sudo",
-		Args: []string{"dnf", "upgrade", "-y"},
+		Args: []string{"pacman", "-Syu"},
 	}
 
 	err := ExecuteCommand(c)
@@ -46,7 +46,7 @@ func (f *ArchHelper) InstallPackages(p []string) error {
 
 	c := Cmd{
 		Bin:  "sudo",
-		Args: []string{"dnf", "install", "-y"},
+		Args: []string{"pacman", "-Sy"},
 	}
 	c.Args = append(c.Args, p...)
 
@@ -70,7 +70,7 @@ func (f *ArchHelper) RemovePackages(p []string) error {
 
 	c := Cmd{
 		Bin:  "sudo",
-		Args: []string{"dnf", "remove", "-y"},
+		Args: []string{"pacman", "-Rsy"},
 	}
 	c.Args = append(c.Args, p...)
 
