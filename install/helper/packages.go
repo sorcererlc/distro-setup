@@ -61,8 +61,8 @@ func LoadPackages(distro string) (*Packages, *Packages, error) {
 func InstallRepos(distro string, dv string, pkg []string) error {
 	switch distro {
 	case "fedora":
-		d := FedoraHelper{}
-		err := d.InstallRepos(dv, pkg)
+		d, err := NewFedoraHelper()
+		err = d.InstallRepos(dv, pkg)
 		if err != nil {
 			return err
 		}

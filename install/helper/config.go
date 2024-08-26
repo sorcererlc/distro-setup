@@ -16,9 +16,17 @@ type Config struct {
 		Nvidia    bool `yaml:"nvidia"`
 		Sddm      bool `yaml:"sddm"`
 		Bluetooth bool `yaml:"bluetooth"`
-		Extras    bool `yamnl:"extras"`
+		Extras    bool `yaml:"extras"`
 		Dotfiles  bool `yaml:"dotfiles"`
 	} `yaml:"main"`
+	Flatpak struct {
+		Packages struct {
+			Base   bool `yaml:"base"`
+			Devel  bool `yaml:"devel"`
+			Extras bool `yaml:"extras"`
+			Misc   bool `yaml:"misc"`
+		} `yaml:"packages"`
+	} `yaml:"flatpak"`
 }
 
 func LoadCongig() (*Config, error) {

@@ -1,0 +1,29 @@
+base:
+  - com.vivaldi.Vivaldi
+  - com.brave.Browser
+
+devel:
+  - rest.insomnia.Insomnia
+  - com.vscodium.codium
+
+extras:
+  - org.telegram.desktop
+  - io.github.spacingbat3.webcord
+  - tv.plex.PlexDesktop
+  - com.github.Matoking.protontricks
+  - com.heroicgameslauncher.hgl
+  - net.lutris.Lutris
+  - org.prismlauncher.PrismLauncher
+  - com.protonvpn.www
+  - org.kicad.KiCad
+  - org.openttd.OpenTTD
+  - io.openrct2.OpenRCT2
+  - org.equeim.Tremotesf
+  - org.jdownloader.JDownloader
+  - com.obsproject.Studio
+  - org.strawberrymusicplayer.strawberry
+  - org.audacityteam.Audacity
+  - io.gitlab.news_flash.NewsFlash
+
+misc:
+  - com.slack.Slack

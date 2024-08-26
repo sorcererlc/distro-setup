@@ -70,19 +70,14 @@ remove:
 
 extras: # TODO find sources for Arch
   - flatpak
-  - flatseal
   - steam
-  - input-remapper
   - lm_sensors
-  - coolercontrol
   - celluloid
   - vlc
   - virt-manager
   - dolphin
   - kate
   - darktable
-  - nomacs
-  - spacenavd
   - openrgb
   - ufw
   - firejail
@@ -100,6 +95,7 @@ extras: # TODO find sources for Arch
   - tldr
   - exa
   - goverlay
+  - wayvnc
 
 fonts: # TODO find sources for Arch
   - adobe-source-code-pro-fonts

@@ -26,6 +26,11 @@ bluetooth:
 
 extras:
   - dnf-plugins-core
+  - flatseal
+  - input-remapper
+  - coolercontrol
+  - nomacs
+  - spacenavd
 
 fonts: 
   - fira-code-fonts

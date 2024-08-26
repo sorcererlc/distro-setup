@@ -27,3 +27,10 @@ fonts:
   - ttf-jetbrains-mono-nerd 
 
 aur:
+  - input-remapper-git
+  - coolercontrol
+  - flatseal
+  - nomacs
+  - spacenavd
+  - auto-cpufreq
+  - advcmpv

@@ -80,6 +80,14 @@ func main() {
 		}
 	}
 
+	fp, err := helper.NewFlatpakHelper(conf)
+	if err != nil {
+		panic(err)
+	}
+
+	fp.InstallRepos()
+	fp.InstallPackages()
+
 	// Configure various distro settings (theming, fonts, symlinks, etc)
 	err = helper.SetupDistro(os.Id)
 	if err != nil {

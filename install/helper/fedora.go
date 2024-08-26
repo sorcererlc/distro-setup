@@ -9,11 +9,17 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-type Repos struct {
-	Copr []string `yaml:"copr"`
+type FedoraHelper struct {
+	CorpRepos struct {
+		Copr []string `yaml:"copr"`
+	}
 }
 
-type FedoraHelper struct{}
+func NewFedoraHelper() (*FedoraHelper, error) {
+	f := FedoraHelper{}
+
+	return &f, nil
+}
 
 func (f *FedoraHelper) checkInstalledPackage(p string) bool {
 	c := Cmd{
@@ -98,15 +104,13 @@ func (f *FedoraHelper) EnableCoprRepos() error {
 		return err
 	}
 
-	r := Repos{}
-
-	err = yaml.Unmarshal(fs, &r)
+	err = yaml.Unmarshal(fs, &f.CorpRepos)
 
 	c := Cmd{
 		Bin:  "sudo",
 		Args: []string{"dnf", "copr", "enable", "-y"},
 	}
-	c.Args = append(c.Args, r.Copr...)
+	c.Args = append(c.Args, f.CorpRepos.Copr...)
 
 	err = ExecuteCommand(c)
 	if err != nil {

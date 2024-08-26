@@ -8,3 +8,10 @@ packages:
   sddm: true # install and configure sddm (including theme if dotfiles are installed)
   extras: true # Install extra packages (see extras section in distro/packages.yml)
   dotfiles: true # Install sorcerer's dotfiles
+
+flatpak:
+  packages:
+    base: true
+    devel: true
+    extras: true
+    misc: true
