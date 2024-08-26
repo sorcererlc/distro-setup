@@ -16,6 +16,11 @@ sudo sed -Ei 's/^(MODULES=\([^\)]*)\)/\1 nvidia nvidia_modeset nvidia_uvm nvidia
 #echo "blacklist nouveau" | sudo tee -a "$NOUVEAU"
 #echo "install nouveau /bin/true" | sudo tee -a "/etc/modprobe.d/blacklist.conf"
 
+echo "Installing paru"
+git clone https://aur.archlinux.org/paru.git
+cd paru
+makepkg -si
+
 echo "Installing software"
 sudo pacman -Sy --needed \
   git \
@@ -40,12 +45,14 @@ sudo pacman -Sy --needed \
   android-tools \
   neovim \
   owncloud-client \
-  zoxide
-
-echo "Installing paru"
-git clone https://aur.archlinux.org/paru.git
-cd paru
-makepkg -si
+  zoxide \
+  zsh \
+  bat \
+  tldr \
+  progress \
+  htop \
+  exa \
+  unzip
 
 paru -Sy \
   input-remapper-git \
@@ -54,3 +61,9 @@ paru -Sy \
   nomacs \
   spacenavd \
   auto-cpufreq
+
+echo "Installing Advanced Copy"
+curl https://raw.githubusercontent.com/jarun/advcpmv/master/install.sh --create-dirs -o ./advcpmv/install.sh && (cd advcpmv && sh install.sh)
+sudo mv ./advcpmv/advcp /usr/local/bin/cpg
+sudo mv ./advcpmv/advmv /usr/local/bin/mvg
+rm -rf ./advcpmv

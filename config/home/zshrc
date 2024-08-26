@@ -1,0 +1,62 @@
+# Load zgenom
+if [[ ! -f "${HOME}/.zsh/zgenom/zgenom.zsh" ]]; then
+  git clone https://github.com/jandamm/zgenom.git "${HOME}/.zsh/zgenom"
+fi
+source "${HOME}/.zsh/zgenom/zgenom.zsh"
+
+if [ !-f $HOME/.zsh_history ] then
+  touch $HOME/.zsh_history
+fi
+
+# Check for updates ever 7 days
+zgenom autoupdate
+
+# Load Catppuccin theme
+source $HOME/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
+
+# Environment
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+export PATH="$PATH:$HOME/.local/bin"
+export MANGOHUD=1
+export TERM=kitty
+export LC_TIME=en_GB.UTF-8
+export EDITOR"$(which nvim)"
+
+# Command history config
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt appendhistory
+
+# OhMyPosh theme
+THEME_DIR=$HOME/.cache/oh-my-posh/themes
+OMP_THEME="powerlevel10k_classic"
+
+# Load OhMyPosh and other tools
+eval "$(oh-my-posh init zsh --config $THEME_DIR/$OMP_THEME.omp.json)"
+eval "$(zoxide init zsh)"
+
+if ! zgenom saved; then
+  zgenom load zsh-users/zsh-autosuggestions
+  zgenom load zsh-users/zsh-syntax-highlighting
+  zgenom load marlonrichert/zsh-autocomplete
+  zgenom save
+fi
+
+
+# Alias all the things
+alias ls="pls -a -d perms -d user -d group -d size -d mtime -d git"
+alias cp="cpg -g"
+alias mv="mvg -g"
+alias cat="bat"
+alias vi="nvim"
+alias vim="nvim"
+alias codium="flatpak run com.vscodium.codium "
+
+# Key bindings
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
+bindkey '^[[3~' delete-char
+
+# Sexy fetch
+fastfetch

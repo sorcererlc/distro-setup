@@ -5,7 +5,7 @@ flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.f
 flatpak install -y \
   com.vivaldi.Vivaldi \
   com.brave.Browser \
-  io.github.tdesktop_x64.TDesktop \
+  org.telegram.desktop \
   io.github.spacingbat3.webcord \
   tv.plex.PlexDesktop \
   com.vscodium.codium \
@@ -19,7 +19,6 @@ flatpak install -y \
   org.openttd.OpenTTD \
   io.openrct2.OpenRCT2 \
   org.equeim.Tremotesf \
-  org.freedesktop.Platform.VulkanLayer.MangoHud \
   org.jdownloader.JDownloader \
   com.obsproject.Studio \
   org.strawberrymusicplayer.strawberry \

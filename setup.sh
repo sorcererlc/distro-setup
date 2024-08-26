@@ -43,7 +43,7 @@ echo "Detecting hardware sensors"
 sudo sensors-detect
 
 echo "Setting up service configuration"
-sudo cp -r ./services/etc/* /etc
+sudo cp -r ./config/etc/* /etc
 
 echo "Enabling and starting services"
 sudo systemctl enable --now sshd
@@ -55,9 +55,10 @@ sudo systemctl enable --now auto-cpufreq
 ./flatpak.sh
 ./shares.sh
 ./udev.sh
+./mangohud.sh
 ./shell.sh
 
-read -p "Setup complete. You must reboot for the changes to apply. Do you want to reboot now? (y/n)" proceed
+read -p "Setup complete. You must reboot for the changes to apply. Do you want to reboot now? (y/N)" proceed
 if [ "$proceed" != "y" ]; then
     echo "Reboot skipped."
     exit 0

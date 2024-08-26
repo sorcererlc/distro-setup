@@ -1,0 +1,105 @@
+base:
+  # Various tools
+  - curl
+  - git
+  - jq
+  - grim
+  - gvfs
+  - gvfs-mtp
+  - inxi
+  - alacritty
+  - nano
+  - network-manager-applet
+  - yad
+  - brightnessctl
+  - btop
+  - cava
+  - eog
+  - fastfetch
+  - gnome-system-monitor
+  - aylurs-gtk-shell
+  - unzip
+  - xdg-user-dirs
+  - xdg-utils
+  # Audio
+  - pamixer
+  - pavucontrol
+  - pipewire-pulse
+  - pipewire-alsa
+  - pipewire-utils
+  - playerctl
+  # Media
+  - mpv
+  - mpv-mpris
+  - nvtop
+  # Authentication backend
+  - polkit-gnome
+  # Theming
+  - qt5ct
+  - qt6ct
+  - kvantum
+  # Clipboard and screen capture
+  - slurp
+  - swappy
+  - waybar
+  - wl-clipboard
+  - cliphist
+  # Logout menu
+  - wlogout
+  # Wallpaper
+  - swww
+
+hyprland:
+  - hyprland
+  - hyprland-devel
+  - hyprcursor
+  - hypridle
+  - hyprlock
+  - pyprland
+
+sway:
+  - sway
+  - swaylock-effects
+
+sddm:
+  - sddm
+
+remove:
+  - dunst
+  - mako
+
+extras: # TODO find sources for Arch
+  - flatpak
+  - flatseal
+  - steam
+  - input-remapper
+  - lm_sensors
+  - coolercontrol
+  - celluloid
+  - vlc
+  - virt-manager
+  - dolphin
+  - kate
+  - darktable
+  - nomacs
+  - spacenavd
+  - openrgb
+  - ufw
+  - firejail
+  - remmina
+  - mc
+  - winetricks
+  # - android-tools
+  - neovim
+  - owncloud-client
+  - zoxide
+  - pipewire-wineasio
+  - qalculate-gtk
+  - zsh
+  - bat
+  - tldr
+  - exa
+  - goverlay
+
+fonts: # TODO find sources for Arch
+  - adobe-source-code-pro-fonts

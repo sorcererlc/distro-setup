@@ -1,0 +1,37 @@
+# Fedora Linux specific packages
+repo:
+  - "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-%s.noarch.rpm"
+  - "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-%s.noarch.rpm"
+
+base:
+  - gawk
+  - ImageMagick
+  - openssl
+  - python3-requests
+  - python3-pip
+  - python3-pyquery
+  - qt6-qtsvg
+  - rofi-wayland
+  - SwayNotificationCenter
+  - wget2
+  - vim-enhanced
+
+nvidia:
+  - akmod-nvidia
+  - libva
+  - libva-nvidia-driver
+  - xorg-x11-drv-nvidia-cuda
+
+bluetooth:
+
+extras:
+  - dnf-plugins-core
+
+fonts: 
+  - fira-code-fonts
+  - fontawesome-fonts-all
+  - google-droid-sans-fonts
+  - google-noto-sans-cjk-fonts
+  - google-noto-color-emoji-fonts
+  - google-noto-emoji-fonts
+  - jetbrains-mono-fonts

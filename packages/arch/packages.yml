@@ -1,0 +1,29 @@
+# Arch Linux specific packages
+base:
+  - base-devel
+  - imagemagick
+  - python-requests
+  - python-pyquery
+  - qt6-svg
+  - swaync
+  - wget
+  - vim
+
+nvidia:
+  - nvidia-dkms
+  - nvidia-settings
+  - nvidia-utils
+  - libva
+  - libva-nvidia-driver-git
+
+extras:
+
+fonts:
+  - noto-fonts-emoji
+  - otf-font-awesome 
+  - ttf-droid 
+  - ttf-fira-code
+  - ttf-jetbrains-mono 
+  - ttf-jetbrains-mono-nerd 
+
+aur:
