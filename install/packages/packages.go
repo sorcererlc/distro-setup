@@ -43,17 +43,12 @@ func (p *Pkg) loadPackageFile(fs string) (*types.Packages, error) {
 }
 
 func (p *Pkg) loadPackages(distro string) (*types.Packages, error) {
-	c, err := os.Getwd()
+	pkg, err := p.loadPackageFile(p.Env.Cwd + "/packages/common/packages.yml")
 	if err != nil {
 		return nil, err
 	}
 
-	pkg, err := p.loadPackageFile(c + "/packages/common/packages.yml")
-	if err != nil {
-		return nil, err
-	}
-
-	dPkg, err := p.loadPackageFile(c + "/packages/" + distro + "/packages.yml")
+	dPkg, err := p.loadPackageFile(p.Env.Cwd + "/packages/" + distro + "/packages.yml")
 	if err != nil {
 		return nil, err
 	}
@@ -84,9 +79,6 @@ func (p *Pkg) SetupPackages() error {
 	if err != nil {
 		return err
 	}
-
-	s, _ := yaml.Marshal(p.Conf)
-	p.Log.Info(string(s))
 
 	switch p.Env.OS.Id {
 	case "fedora":

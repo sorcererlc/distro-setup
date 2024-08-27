@@ -22,7 +22,7 @@ func NewArchHelper(c *types.Config, e *types.Environment) *ArchHelper {
 	f := ArchHelper{
 		Conf: c,
 		Env:  e,
-		Log:  log.NewLog("arch_packages.log"),
+		Log:  log.NewLog("packages.log"),
 	}
 
 	return &f

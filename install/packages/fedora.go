@@ -25,7 +25,7 @@ func NewFedoraHelper(c *types.Config, e *types.Environment) *FedoraHelper {
 	f := FedoraHelper{
 		Conf: c,
 		Env:  e,
-		Log:  log.NewLog("fedora_packages.log"),
+		Log:  log.NewLog("packages.log"),
 	}
 
 	return &f

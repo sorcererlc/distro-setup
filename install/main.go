@@ -25,12 +25,9 @@ func main() {
 	if err != nil {
 		os.Exit(1)
 	}
+	os.Exit(1)
 
-	fp, err := packages.NewFlatpakHelper(conf)
-	if err != nil {
-		panic(err)
-	}
-
+	fp := packages.NewFlatpakHelper(conf, env)
 	fp.InstallRepos()
 	fp.InstallPackages()
 

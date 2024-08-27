@@ -20,7 +20,6 @@ func GetConfig(e *types.Environment) (*types.Config, error) {
 		l.Error("Error loading config file", err.Error())
 		return nil, err
 	}
-	println(string(f))
 
 	err = yaml.Unmarshal(f, &conf)
 	if err != nil {

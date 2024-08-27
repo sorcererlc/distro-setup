@@ -1,9 +1,9 @@
 package packages
 
 import (
-	"fmt"
 	"os"
 	"setup/helper"
+	"setup/log"
 	"setup/types"
 	"strings"
 
@@ -11,8 +11,9 @@ import (
 )
 
 type FlatpakHelper struct {
-	Cwd    string
 	Config *types.Config
+	Env    *types.Environment
+	Log    *log.Log
 	Repos  struct {
 		Base []string `yaml:"base"`
 	}
@@ -24,28 +25,26 @@ type FlatpakHelper struct {
 	}
 }
 
-func NewFlatpakHelper(c *types.Config) (*FlatpakHelper, error) {
-	var err error
+func NewFlatpakHelper(c *types.Config, e *types.Environment) *FlatpakHelper {
 	f := FlatpakHelper{
 		Config: c,
+		Env:    e,
+		Log:    log.NewLog("flatpak.log"),
 	}
 
-	f.Cwd, err = os.Getwd()
-	if err != nil {
-		return nil, err
-	}
-
-	return &f, nil
+	return &f
 }
 
 func (f *FlatpakHelper) loadPackages() error {
-	fs, err := os.ReadFile(f.Cwd + "/packages/flatpak/packages.yml")
+	fs, err := os.ReadFile(f.Env.Cwd + "/packages/flatpak/packages.yml")
 	if err != nil {
+		f.Log.Error("Read Flatpak packages", err.Error())
 		return nil
 	}
 
 	err = yaml.Unmarshal(fs, &f.Packages)
 	if err != nil {
+		f.Log.Error("Parse Flatpak packages", err.Error())
 		return nil
 	}
 
@@ -53,7 +52,7 @@ func (f *FlatpakHelper) loadPackages() error {
 }
 
 func (f *FlatpakHelper) installPackageGroup(g []string) error {
-	fmt.Printf("Installing Flatpak packages %s\n", strings.Join(g, ", "))
+	f.Log.Info("Installing Flatpak packages", strings.Join(g, ", "))
 
 	c := helper.Cmd{
 		Bin:  "flatpak",
@@ -63,7 +62,7 @@ func (f *FlatpakHelper) installPackageGroup(g []string) error {
 
 	err := helper.ExecuteCommand(c)
 	if err != nil {
-		fmt.Printf("Error installing Flatpak packages. Aborting setup.\n%s", err.Error())
+		f.Log.Error("Install Flatpak packages", err.Error())
 		return err
 	}
 
@@ -103,12 +102,17 @@ func (f *FlatpakHelper) InstallPackages() error {
 }
 
 func (f *FlatpakHelper) InstallRepos() error {
-	fs, err := os.ReadFile(f.Cwd + "/packages/flatpak/repos.yml")
+	fs, err := os.ReadFile(f.Env.Cwd + "/packages/flatpak/repos.yml")
 	if err != nil {
+		f.Log.Error("Read Flatpak repo file", err.Error())
 		return err
 	}
 
 	err = yaml.Unmarshal(fs, &f.Repos)
+	if err != nil {
+		f.Log.Error("Parse Flatpak repo file", err.Error())
+		return err
+	}
 
 	c := helper.Cmd{
 		Bin:  "flatpak",
@@ -118,6 +122,7 @@ func (f *FlatpakHelper) InstallRepos() error {
 
 	err = helper.ExecuteCommand(c)
 	if err != nil {
+		f.Log.Error("Install Flatpak repos", err.Error())
 		return nil
 	}
 
