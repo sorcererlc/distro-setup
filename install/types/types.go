@@ -13,21 +13,6 @@ type OS struct {
 	VersionId  string `json:"version_id"`
 }
 
-type Packages struct {
-	Repo      []string `yaml:"repo"`
-	Base      []string `yaml:"base"`
-	Hyprland  []string `yaml:"hyprland"`
-	Sway      []string `yaml:"sway"`
-	Nvidia    []string `yaml:"nvidia"`
-	Sddm      []string `yaml:"sddm"`
-	Bluetooth []string `yaml:"bluetooth"`
-	Extras    []string `yaml:"extras"`
-	Aur       []string `yaml:"aur,omitempty"`
-	AurExtra  []string `yaml:"aur_extras,omitempty"`
-	Remove    []string `yaml:"remove"`
-	Fonts     []string `yaml:"fonts"`
-}
-
 type Config struct {
 	Options struct {
 		WindowManager  string `yaml:"window_manager"`
@@ -48,4 +33,34 @@ type Config struct {
 			Misc   bool `yaml:"misc"`
 		} `yaml:"packages"`
 	} `yaml:"flatpak"`
+	DotFilesRepo GitPackage `yaml:"dotfiles_repo"`
+}
+
+type GitPackage struct {
+	Url string `yaml:"url"`
+	Tag string `yaml:"tag"`
+}
+
+type Packages struct {
+	Repo      []string              `yaml:"repo"`
+	Base      []string              `yaml:"base"`
+	Hyprland  []string              `yaml:"hyprland"`
+	Sway      []string              `yaml:"sway"`
+	Nvidia    []string              `yaml:"nvidia"`
+	Sddm      []string              `yaml:"sddm"`
+	Bluetooth []string              `yaml:"bluetooth"`
+	Extras    []string              `yaml:"extras"`
+	Aur       []string              `yaml:"aur"`
+	AurExtra  []string              `yaml:"aur_extras"`
+	Remove    []string              `yaml:"remove"`
+	Fonts     []string              `yaml:"fonts"`
+	Git       map[string]GitPackage `yaml:"git"`
+}
+
+type DistroConfig struct {
+	Services struct {
+		Bluetooth []string `yaml:"bluetooth"`
+		Sddm      []string `yaml:"sddm"`
+	} `yaml:"services"`
+	Groups []string `yaml:"groups"`
 }

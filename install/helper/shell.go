@@ -12,7 +12,17 @@ type Cmd struct {
 	Args []string
 }
 
-func ExecuteCommand(cmd Cmd) error {
+func Run(a ...string) error {
+	b, a := a[0], a[1:]
+	c := Cmd{
+		Bin:  b,
+		Args: append([]string{}, a...),
+	}
+
+	return executeCommand(c)
+}
+
+func executeCommand(cmd Cmd) error {
 	l := log.NewStdOutLog()
 
 	if os.Getenv("DRY_RUN") == "true" {

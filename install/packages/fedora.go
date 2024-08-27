@@ -72,18 +72,18 @@ func (f *FedoraHelper) SetupPackages(pkg *types.Packages) error {
 		return err
 	}
 
+	err = f.setupNwgLook(pkg.Git["nwg-look"])
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
 func (f *FedoraHelper) updateDistro() error {
 	f.Log.Info("Updating packages")
 
-	c := helper.Cmd{
-		Bin:  "sudo",
-		Args: []string{"dnf", "upgrade", "-y"},
-	}
-
-	err := helper.ExecuteCommand(c)
+	err := helper.Run("sudo", "dnf", "upgrade", "-y")
 	if err != nil {
 		f.Log.Error("Update packages", err.Error())
 		return err
@@ -98,13 +98,9 @@ func (f *FedoraHelper) installRepos(r []string) error {
 	}
 	f.Log.Info("Installing repositories", strings.Join(r, ", "))
 
-	c := helper.Cmd{
-		Bin:  "sudo",
-		Args: []string{"dnf", "install", "-y"},
-	}
-	c.Args = append(c.Args, r...)
-
-	err := helper.ExecuteCommand(c)
+	args := []string{"sudo", "dnf", "install", "-y"}
+	args = append(args, r...)
+	err := helper.Run(args...)
 	if err != nil {
 		f.Log.Error("Install repositories", err.Error())
 		return err
@@ -123,13 +119,9 @@ func (f *FedoraHelper) enableCoprRepos() error {
 
 	err = yaml.Unmarshal(fs, &f.CoprRepos)
 
-	c := helper.Cmd{
-		Bin:  "sudo",
-		Args: []string{"dnf", "copr", "enable", "-y"},
-	}
-	c.Args = append(c.Args, f.CoprRepos.Copr...)
-
-	err = helper.ExecuteCommand(c)
+	args := []string{"sudo", "dnf", "copr", "enable", "-y"}
+	args = append(args, f.CoprRepos.Copr...)
+	err = helper.Run(args...)
 	if err != nil {
 		f.Log.Error("Enable Copr repositories", err.Error())
 		return err
@@ -141,13 +133,9 @@ func (f *FedoraHelper) enableCoprRepos() error {
 func (f *FedoraHelper) removePackages(p []string) error {
 	f.Log.Info("Removing packages", strings.Join(p, ", "))
 
-	c := helper.Cmd{
-		Bin:  "sudo",
-		Args: []string{"dnf", "remove", "-y"},
-	}
-	c.Args = append(c.Args, p...)
-
-	err := helper.ExecuteCommand(c)
+	args := []string{"sudo", "dnf", "remove", "-y"}
+	args = append(args, p...)
+	err := helper.Run(args...)
 	if err != nil {
 		f.Log.Error("Remove packages", err.Error())
 		return err
@@ -159,13 +147,9 @@ func (f *FedoraHelper) removePackages(p []string) error {
 func (f *FedoraHelper) installPackages(p []string) error {
 	f.Log.Info("Installing packages", strings.Join(p, ", "))
 
-	c := helper.Cmd{
-		Bin:  "sudo",
-		Args: []string{"dnf", "install", "-y"},
-	}
-	c.Args = append(c.Args, p...)
-
-	err := helper.ExecuteCommand(c)
+	args := []string{"sudo", "dnf", "install", "-y"}
+	args = append(args, p...)
+	err := helper.Run(args...)
 	if err != nil {
 		f.Log.Error("Install packages", err.Error())
 		return err
@@ -183,15 +167,37 @@ func (f *FedoraHelper) installPackages(p []string) error {
 }
 
 func (f *FedoraHelper) checkInstalledPackage(p string) bool {
-	c := helper.Cmd{
-		Bin:  "dnf",
-		Args: []string{"list", "installed", p},
-	}
-
-	err := helper.ExecuteCommand(c)
+	err := helper.Run("dnf", "list", "installed", p)
 	if err != nil {
 		return false
 	}
 
 	return true
+}
+
+func (f *FedoraHelper) setupNwgLook(p types.GitPackage) error {
+	err := helper.Run("git", "clone", "--reursive", "--depth", "1", "--branch", p.Tag, p.Url)
+	if err != nil {
+		f.Log.Error("Clone nwg-look repo", err.Error())
+		return err
+	}
+
+	_ = helper.Run("cd", "nwg-look")
+
+	err = helper.Run("make", "build")
+	if err != nil {
+		f.Log.Error("Build nwg-look", err.Error())
+		return err
+	}
+
+	err = helper.Run("sudo", "make", "install")
+	if err != nil {
+		f.Log.Error("Install nwg-look", err.Error())
+		return err
+	}
+
+	_ = helper.Run("cd", f.Env.Cwd)
+	_ = helper.Run("rm", "-rf", "nwg-look")
+
+	return nil
 }

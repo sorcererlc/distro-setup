@@ -64,6 +64,13 @@ func (p *Pkg) loadPackages(distro string) (*types.Packages, error) {
 	pkg.Remove = append(pkg.Remove, dPkg.Remove...)
 	pkg.Fonts = append(pkg.Fonts, dPkg.Fonts...)
 
+	if pkg.Git == nil {
+		pkg.Git = make(map[string]types.GitPackage)
+	}
+	for k, v := range dPkg.Git {
+		pkg.Git[k] = v
+	}
+
 	if dPkg.Aur != nil {
 		pkg.Aur = dPkg.Aur
 	}

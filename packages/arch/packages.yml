@@ -5,16 +5,26 @@ base:
   - python-requests
   - python-pyquery
   - qt6-svg
+  - nwg-look
   - swaync
   - wget
   - vim
+  - gtk-engine-murrine
 
 nvidia:
-  - nvidia-dkms
+  - nvidia
   - nvidia-settings
   - nvidia-utils
   - libva
   - libva-nvidia-driver-git
+
+bluetooth:
+  - bluez-utils
+
+sddm:
+  - qt6-5compat 
+  - qt6-declarative 
+  - qt6-svg
 
 extras:
 

@@ -15,6 +15,13 @@ base:
   - SwayNotificationCenter
   - wget2
   - vim-enhanced
+  - gtk-murrine-engine
+  # Dependencies for building nwg-look
+  - golang
+  - gtk3
+  - gtk3-devel
+  - cairo-devel
+  - glib-devel
 
 nvidia:
   - akmod-nvidia
@@ -23,6 +30,13 @@ nvidia:
   - xorg-x11-drv-nvidia-cuda
 
 bluetooth:
+  - bluez-tools
+  - python3-cairo
+
+sddm:
+  - qt6-qt5compat 
+  - qt6-qtdeclarative 
+  - qt6-qtsvg
 
 extras:
   - dnf-plugins-core
@@ -40,3 +54,8 @@ fonts:
   - google-noto-color-emoji-fonts
   - google-noto-emoji-fonts
   - jetbrains-mono-fonts
+
+git:
+  nwg-look:
+    url: https://github.com/nwg-piotr/nwg-look.git
+    tag: v0.2.7

@@ -19,8 +19,10 @@ base:
   - gnome-system-monitor
   - aylurs-gtk-shell
   - unzip
-  - xdg-user-dirs
-  - xdg-utils
+  # File manager
+  - dolphin
+  - ffmpegthumbnailer
+  - tumbler
   # Audio
   - pamixer
   - pavucontrol
@@ -48,6 +50,11 @@ base:
   - wlogout
   # Wallpaper
   - swww
+  # XDG portals
+  - xdg-desktop-portal-hyprland
+  - xdg-desktop-portal-gtk
+  - xdg-user-dirs
+  - xdg-utils
 
 hyprland:
   - hyprland
@@ -68,6 +75,10 @@ remove:
   - dunst
   - mako
 
+bluetooth:
+  - bluez
+  - blueman
+
 extras: # TODO find sources for Arch
   - flatpak
   - steam
@@ -75,7 +86,6 @@ extras: # TODO find sources for Arch
   - celluloid
   - vlc
   - virt-manager
-  - dolphin
   - kate
   - darktable
   - openrgb
@@ -99,3 +109,5 @@ extras: # TODO find sources for Arch
 
 fonts: # TODO find sources for Arch
   - adobe-source-code-pro-fonts
+
+git:

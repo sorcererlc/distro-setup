@@ -35,40 +35,6 @@ func NewFlatpakHelper(c *types.Config, e *types.Environment) *FlatpakHelper {
 	return &f
 }
 
-func (f *FlatpakHelper) loadPackages() error {
-	fs, err := os.ReadFile(f.Env.Cwd + "/packages/flatpak/packages.yml")
-	if err != nil {
-		f.Log.Error("Read Flatpak packages", err.Error())
-		return nil
-	}
-
-	err = yaml.Unmarshal(fs, &f.Packages)
-	if err != nil {
-		f.Log.Error("Parse Flatpak packages", err.Error())
-		return nil
-	}
-
-	return nil
-}
-
-func (f *FlatpakHelper) installPackageGroup(g []string) error {
-	f.Log.Info("Installing Flatpak packages", strings.Join(g, ", "))
-
-	c := helper.Cmd{
-		Bin:  "flatpak",
-		Args: []string{"install", "-y"},
-	}
-	c.Args = append(c.Args, g...)
-
-	err := helper.ExecuteCommand(c)
-	if err != nil {
-		f.Log.Error("Install Flatpak packages", err.Error())
-		return err
-	}
-
-	return nil
-}
-
 func (f *FlatpakHelper) InstallPackages() error {
 	err := f.loadPackages()
 	if err != nil {
@@ -101,6 +67,36 @@ func (f *FlatpakHelper) InstallPackages() error {
 	return nil
 }
 
+func (f *FlatpakHelper) loadPackages() error {
+	fs, err := os.ReadFile(f.Env.Cwd + "/packages/flatpak/packages.yml")
+	if err != nil {
+		f.Log.Error("Read Flatpak packages", err.Error())
+		return nil
+	}
+
+	err = yaml.Unmarshal(fs, &f.Packages)
+	if err != nil {
+		f.Log.Error("Parse Flatpak packages", err.Error())
+		return nil
+	}
+
+	return nil
+}
+
+func (f *FlatpakHelper) installPackageGroup(g []string) error {
+	f.Log.Info("Installing Flatpak packages", strings.Join(g, ", "))
+
+	args := []string{"flatpak", "install", "-y"}
+	args = append(args, g...)
+	err := helper.Run(args...)
+	if err != nil {
+		f.Log.Error("Install Flatpak packages", err.Error())
+		return err
+	}
+
+	return nil
+}
+
 func (f *FlatpakHelper) InstallRepos() error {
 	fs, err := os.ReadFile(f.Env.Cwd + "/packages/flatpak/repos.yml")
 	if err != nil {
@@ -114,13 +110,9 @@ func (f *FlatpakHelper) InstallRepos() error {
 		return err
 	}
 
-	c := helper.Cmd{
-		Bin:  "flatpak",
-		Args: []string{"remote-add", "--if-not-exists"},
-	}
-	c.Args = append(c.Args, f.Repos.Base...)
-
-	err = helper.ExecuteCommand(c)
+	args := []string{"flatpak", "remote-add", "--if-not-exists"}
+	args = append(args, f.Repos.Base...)
+	err = helper.Run(args...)
 	if err != nil {
 		f.Log.Error("Install Flatpak repos", err.Error())
 		return nil

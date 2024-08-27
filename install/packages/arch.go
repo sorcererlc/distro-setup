@@ -80,12 +80,7 @@ func (f *ArchHelper) SetupPackages(pkg *types.Packages) error {
 func (f *ArchHelper) updateDistro() error {
 	f.Log.Info("Updating packages")
 
-	c := helper.Cmd{
-		Bin:  "sudo",
-		Args: []string{"pacman", "-Syu"},
-	}
-
-	err := helper.ExecuteCommand(c)
+	err := helper.Run("sudo", "pacman", "-Syu")
 	if err != nil {
 		f.Log.Error("Update packages", err.Error())
 		return err
@@ -100,13 +95,9 @@ func (f *ArchHelper) installRepos(r []string) error {
 	}
 	f.Log.Info("Installing repositories", strings.Join(r, ", "))
 
-	c := helper.Cmd{
-		Bin:  "sudo",
-		Args: []string{"pacman", "-Sy"},
-	}
-	c.Args = append(c.Args, r...)
-
-	err := helper.ExecuteCommand(c)
+	args := []string{"sudo", "pacman", "-Sy"}
+	args = append(args, r...)
+	err := helper.Run(args...)
 	if err != nil {
 		f.Log.Error("Install repositories", err.Error())
 		return err
@@ -118,13 +109,9 @@ func (f *ArchHelper) installRepos(r []string) error {
 func (f *ArchHelper) removePackages(p []string) error {
 	f.Log.Info("Removing packages", strings.Join(p, ", "))
 
-	c := helper.Cmd{
-		Bin:  "sudo",
-		Args: []string{"pacman", "-Rsy"},
-	}
-	c.Args = append(c.Args, p...)
-
-	err := helper.ExecuteCommand(c)
+	args := []string{"sudo", "pacman", "-Rsy"}
+	args = append(args, p...)
+	err := helper.Run(args...)
 	if err != nil {
 		f.Log.Error("Remove packages", err.Error())
 		return err
@@ -136,13 +123,9 @@ func (f *ArchHelper) removePackages(p []string) error {
 func (f *ArchHelper) installPackages(p []string) error {
 	f.Log.Info("Installing packages", strings.Join(p, ", "))
 
-	c := helper.Cmd{
-		Bin:  "sudo",
-		Args: []string{"pacman", "-Sy"},
-	}
-	c.Args = append(c.Args, p...)
-
-	err := helper.ExecuteCommand(c)
+	args := []string{"sudo", "pacman", "-Sy"}
+	args = append(args, p...)
+	err := helper.Run(args...)
 	if err != nil {
 		f.Log.Error("Install packages", err.Error())
 		return err
@@ -162,13 +145,9 @@ func (f *ArchHelper) installPackages(p []string) error {
 func (f *ArchHelper) installAurPackages(p []string) error {
 	f.Log.Info("Installing AUR packages", strings.Join(p, ", "))
 
-	c := helper.Cmd{
-		Bin:  "paru",
-		Args: []string{"-Sy"},
-	}
-	c.Args = append(c.Args, p...)
-
-	err := helper.ExecuteCommand(c)
+	args := []string{"paru", "-Sy"}
+	args = append(args, p...)
+	err := helper.Run(args...)
 	if err != nil {
 		f.Log.Error("Install AUR packages", err.Error())
 		return err
@@ -185,12 +164,7 @@ func (f *ArchHelper) installAurPackages(p []string) error {
 }
 
 func (f *ArchHelper) checkInstalledPackage(p string) bool {
-	c := helper.Cmd{
-		Bin:  "pacman",
-		Args: []string{"-Q", p},
-	}
-
-	err := helper.ExecuteCommand(c)
+	err := helper.Run("pacman", "-Q", p)
 	if err != nil {
 		return false
 	}

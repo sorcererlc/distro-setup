@@ -1,0 +1,8 @@
+services:
+  bluetooth:
+    - bluetooth
+  sddm:
+    - sddm
+groups:
+  - input
+  - docker
