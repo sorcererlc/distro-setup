@@ -8,4 +8,4 @@ run:
 
 test:
 	make build
-	DRY_RUN=true ./setup
+	TEST=true ./setup

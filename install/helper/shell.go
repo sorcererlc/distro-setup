@@ -25,7 +25,7 @@ func Run(a ...string) error {
 func executeCommand(cmd Cmd) error {
 	l := log.NewStdOutLog()
 
-	if os.Getenv("DRY_RUN") == "true" {
+	if os.Getenv("TEST") == "true" {
 		l.Debug("Executing " + log.Cyan + cmd.Bin + " " + strings.Join(cmd.Args, " ") + log.Reset)
 		return nil
 	}

@@ -58,9 +58,11 @@ func main() {
 	if slices.Contains([]string{"Y", "y", ""}, in) {
 		println("Rebooting now")
 
-		err = helper.Run("sudo", "reboot")
-		if err != nil {
-			panic(err)
+		if os.Getenv("TEST") != "true" {
+			err = helper.Run("sudo", "reboot")
+			if err != nil {
+				panic(err)
+			}
 		}
 	}
 }
