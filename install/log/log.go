@@ -88,6 +88,15 @@ func (l *Log) writeLogFile(t string, ll string, s string) {
 	_, err = fs.WriteString(t + " " + ll + " " + s + "\n")
 }
 
+func (l *Log) Debug(a ...string) {
+	t := ts()
+	ll := "DEBUG"
+	s := args(a...)
+
+	l.writeLogFile(t, ll, s)
+	writeLogStdout(t, ll, s, Purple)
+}
+
 func (l *Log) Info(a ...string) {
 	t := ts()
 	ll := "INFO"
@@ -95,6 +104,15 @@ func (l *Log) Info(a ...string) {
 
 	l.writeLogFile(t, ll, s)
 	writeLogStdout(t, ll, s, Green)
+}
+
+func (l *Log) Warn(a ...string) {
+	t := ts()
+	ll := "INFO"
+	s := args(a...)
+
+	l.writeLogFile(t, ll, s)
+	writeLogStdout(t, ll, s, Yellow)
 }
 
 func (l *Log) Error(a ...string) {

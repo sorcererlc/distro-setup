@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+export DRY_RUN=true
+
 ./build.sh
-cd ..
 ./setup

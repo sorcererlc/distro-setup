@@ -25,15 +25,8 @@ func main() {
 	if err != nil {
 		os.Exit(1)
 	}
-	os.Exit(1)
 
 	fp := packages.NewFlatpakHelper(conf, env)
 	fp.InstallRepos()
 	fp.InstallPackages()
-
-	// Configure various distro settings (theming, fonts, symlinks, etc)
-	// err = helper.SetupDistro(env.OS.Id)
-	// if err != nil {
-	// 	panic(err)
-	// }
 }

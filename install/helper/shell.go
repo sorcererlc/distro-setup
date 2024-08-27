@@ -15,8 +15,11 @@ type Cmd struct {
 func ExecuteCommand(cmd Cmd) error {
 	l := log.NewStdOutLog()
 
-	l.Info("Executing " + log.Cyan + cmd.Bin + " " + strings.Join(cmd.Args, " ") + log.Reset)
-	return nil
+	if os.Getenv("DRY_RUN") == "true" {
+		l.Debug("Executing " + log.Cyan + cmd.Bin + " " + strings.Join(cmd.Args, " ") + log.Reset)
+		return nil
+	}
+
 	c := exec.Command(cmd.Bin, cmd.Args...)
 	c.Stdout = os.Stdout
 	c.Stdin = os.Stdin
