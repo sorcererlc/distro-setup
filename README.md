@@ -19,7 +19,8 @@ While the result is the same and, indeed, everything this tool does is done via 
 ```
 git clone --depth 1 https://github.com/sorcererlc/distro-setup.git
 cd distro-setup
-make install
+chmod +x setup
+./setup
 ```
 
 If you would like to see all the commands the tool will run without making any changes to your system you can run
