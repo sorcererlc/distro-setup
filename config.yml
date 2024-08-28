@@ -1,6 +1,7 @@
 options:
   window_manager: "hyprland" # hyprland or sway
   global_mango_hud: true
+  firewall: true
 
 packages:
   nvidia: true # Install and configure Nvidia driver
@@ -17,3 +18,8 @@ flatpak:
 
 dotfiles_repo:
   url: https://github.com/sorcererlc/dotfiles.git
+
+firewall_rules:
+  - limit 22/tcp
+  - allow 4950/udp
+  - allow 4955/tcp

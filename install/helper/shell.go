@@ -22,6 +22,17 @@ func Run(a ...string) error {
 	return executeCommand(c)
 }
 
+func RunStdin(a ...string) ([]byte, error) {
+	b, a := a[0], a[1:]
+
+	r, err := exec.Command(b, a...).Output()
+	if err != nil {
+		return nil, err
+	}
+
+	return r, nil
+}
+
 func executeCommand(cmd Cmd) error {
 	l := log.NewStdOutLog()
 

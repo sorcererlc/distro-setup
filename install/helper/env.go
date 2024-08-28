@@ -29,6 +29,13 @@ func GetEnvironment() (*types.Environment, error) {
 	e.OS.Version = r["VERSION"]
 	e.OS.VersionId = r["VERSION_ID"]
 
+	u, err := getUserInfo(l)
+	if err != nil {
+		return nil, err
+	}
+	e.User.Username = u["username"]
+	e.User.Gid = u["gid"]
+
 	return &e, nil
 }
 
@@ -52,4 +59,24 @@ func parseRelease(l *log.Log) (map[string]string, error) {
 	}
 
 	return o, nil
+}
+
+func getUserInfo(l *log.Log) (map[string]string, error) {
+	u := make(map[string]string)
+
+	r, err := RunStdin("whoami")
+	if err != nil {
+		l.Error("Read username", err.Error())
+		return nil, err
+	}
+	u["username"] = strings.ReplaceAll(string(r), "\n", "")
+
+	r, err = RunStdin("id", "-g")
+	if err != nil {
+		l.Error("Read user gid", err.Error())
+		return nil, err
+	}
+	u["gid"] = strings.ReplaceAll(string(r), "\n", "")
+
+	return u, nil
 }

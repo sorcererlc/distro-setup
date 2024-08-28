@@ -1,4 +1,11 @@
 services:
+  base:
+    - sshd
+  extras:
+    - input-remapper
+    - coolercontrold
+    - spacenavd
+    - auto-cpufreq
   bluetooth:
     - bluetooth
   sddm:
@@ -6,3 +13,7 @@ services:
 groups:
   - input
   - docker
+udev:
+  - name: Vial
+    rule: "KERNEL==\"hidraw*\", SUBSYSTEM==\"hidraw\", ATTRS{serial}==\"*vial:f64c2b3c*\", MODE=\"0660\", GROUP=\"$USER_GID\", TAG+=\"uaccess\", TAG+=\"udev-acl\""
+    file: /etc/udev/rules.d/99-vial.rules

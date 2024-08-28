@@ -1,8 +1,12 @@
 package types
 
 type Environment struct {
-	OS  OS
-	Cwd string
+	OS   OS
+	Cwd  string
+	User struct {
+		Username string
+		Gid      string
+	}
 }
 
 type OS struct {
@@ -63,4 +67,9 @@ type DistroConfig struct {
 		Sddm      []string `yaml:"sddm"`
 	} `yaml:"services"`
 	Groups []string `yaml:"groups"`
+	Udev   []struct {
+		Name string `yaml:"name"`
+		Rule string `yaml:"rule"`
+		File string `yaml:"file"`
+	} `yaml:"udev"`
 }

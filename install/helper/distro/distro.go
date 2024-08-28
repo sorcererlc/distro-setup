@@ -5,6 +5,7 @@ import (
 	"setup/helper"
 	"setup/log"
 	"setup/types"
+	"strings"
 
 	"gopkg.in/yaml.v3"
 )
@@ -78,6 +79,23 @@ func (f *DistroHelper) SetupDistro() error {
 		}
 	}
 
+	err := f.detectSensors()
+	if err != nil {
+		return err
+	}
+
+	for _, r := range f.DistroConfig.Udev {
+		err := f.setupUdevRule(r.Name, r.Rule, r.File)
+		if err != nil {
+			return err
+		}
+	}
+
+	err = f.reloadUdevRules()
+	if err != nil {
+		return err
+	}
+
 	if f.Conf.Packages.Dotfiles {
 		err := f.setupDotfiles(f.Conf.DotFilesRepo)
 		if err != nil {
@@ -144,6 +162,81 @@ func (f *DistroHelper) setupDotfiles(p types.GitPackage) error {
 	err = helper.Run("make", "run")
 	if err != nil {
 		f.Log.Error("Setup dotfiles", err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (f *DistroHelper) setupFirewall() error {
+	f.Log.Info("Setting up firewall rules")
+
+	err := helper.Run("sudo", "ufw", "reset")
+	err = helper.Run("sudo", "ufw", "limit", "22/tcp")
+	err = helper.Run("sudo", "ufw", "enable")
+	if err != nil {
+		f.Log.Warn("Firewall rule setup", err.Error())
+	}
+
+	return nil
+}
+
+func (f *DistroHelper) detectSensors() error {
+	f.Log.Info("Detecting hardware sensors")
+
+	err := helper.Run("sudo", "sensors-detect")
+	if err != nil {
+		f.Log.Error("Sensors detect", err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (f *DistroHelper) setupUdevRule(n string, r string, fs string) error {
+	f.Log.Info("Setting up udev rule", n)
+
+	r = strings.ReplaceAll(r, "$USER_GID", f.Env.User.Gid)
+
+	err := f.writeFile(fs, r, false, true)
+	if err != nil {
+		f.Log.Error("Setup udev rule", n, err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (f *DistroHelper) reloadUdevRules() error {
+	err := helper.Run("sudo", "udevadm", "control", "--reload")
+	if err != nil {
+		f.Log.Error("Reload udev rules", err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (f *DistroHelper) writeFile(fs string, s string, a bool, su bool) error {
+	args := []string{"echo", s}
+
+	if su {
+		args = append(args, "|", "sudo", "tee")
+		if a {
+			args = append(args, "-a")
+		}
+	} else {
+		if a {
+			args = append(args, ">>")
+		} else {
+			args = append(args, ">")
+		}
+	}
+
+	args = append(args, fs)
+
+	err := helper.Run(args...)
+	if err != nil {
 		return err
 	}
 
