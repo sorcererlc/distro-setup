@@ -19,8 +19,9 @@ type OS struct {
 
 type Config struct {
 	Options struct {
-		WindowManager  string `yaml:"window_manager"`
-		GlobalMangoHud bool   `yaml:"global_mango_hud"`
+		WindowManager string `yaml:"window_manager"`
+		Firewall      bool   `yaml:"firewall"`
+		NetworkShares bool   `yaml:"network_shares"`
 	} `yaml:"options"`
 	Packages struct {
 		Nvidia    bool `yaml:"nvidia"`
@@ -41,8 +42,9 @@ type Config struct {
 }
 
 type GitPackage struct {
-	Url string `yaml:"url"`
-	Tag string `yaml:"tag"`
+	Url      string   `yaml:"url"`
+	Tag      string   `yaml:"tag"`
+	Commands []string `yaml:"commands"`
 }
 
 type Packages struct {
@@ -72,4 +74,5 @@ type DistroConfig struct {
 		Rule string `yaml:"rule"`
 		File string `yaml:"file"`
 	} `yaml:"udev"`
+	Firewall []string `yaml:"firewall_rules"`
 }

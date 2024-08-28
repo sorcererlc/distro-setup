@@ -1,7 +1,16 @@
 options:
   window_manager: "hyprland" # hyprland or sway
-  global_mango_hud: true
   firewall: true
+  network_shares: true
+
+# To map network shares you have to create a shares.yml file with an array of strings which will be added to /etc/fstab:
+
+#   - //<host> /<target> cifs credentials=$HOME/.smb_credentials,uid=1000,gid=1000,file_mode=0775,dir_mode=0775,_netdev,iocharset=utf8,noperm 0 0
+
+# You also have to create the .smb_credentials file in your home directory with the following structure:
+
+# username=<share user name>
+# password=<share password>
 
 packages:
   nvidia: true # Install and configure Nvidia driver
@@ -19,7 +28,3 @@ flatpak:
 dotfiles_repo:
   url: https://github.com/sorcererlc/dotfiles.git
 
-firewall_rules:
-  - limit 22/tcp
-  - allow 4950/udp
-  - allow 4955/tcp

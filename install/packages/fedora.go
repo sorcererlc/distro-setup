@@ -72,6 +72,16 @@ func (f *FedoraHelper) SetupPackages(pkg *types.Packages) error {
 		return err
 	}
 
+	err = f.installAdvCpMv()
+	if err != nil {
+		return err
+	}
+
+	err = f.installAutoCpuFreq(pkg.Git["auto-cpufreq"])
+	if err != nil {
+		return err
+	}
+
 	err = f.setupNwgLook(pkg.Git["nwg-look"])
 	if err != nil {
 		return err
@@ -175,29 +185,73 @@ func (f *FedoraHelper) checkInstalledPackage(p string) bool {
 	return true
 }
 
+func (f *FedoraHelper) runGitCommand(c string) error {
+	args := strings.Split(c, " ")
+
+	return helper.Run(args...)
+}
+
 func (f *FedoraHelper) setupNwgLook(p types.GitPackage) error {
-	err := helper.Run("git", "clone", "--reursive", "--depth", "1", "--branch", p.Tag, p.Url)
+	f.Log.Info("Installing nwg-look")
+
+	err := helper.Run("git", "clone", "--recursive", "--depth", "1", "--branch", p.Tag, p.Url)
 	if err != nil {
 		f.Log.Error("Clone nwg-look repo", err.Error())
 		return err
 	}
 
-	_ = helper.Run("cd", "nwg-look")
+	for _, c := range p.Commands {
+		err := f.runGitCommand(c)
+		if err != nil {
+			f.Log.Error(c, err.Error())
+			return err
+		}
+	}
 
-	err = helper.Run("make", "build")
+	return nil
+}
+
+func (f *FedoraHelper) installAutoCpuFreq(p types.GitPackage) error {
+	f.Log.Info("Installing auto-cpufreq")
+
+	err := helper.Run("git", "clone", "--recursive", "--depth", "1", p.Url)
 	if err != nil {
-		f.Log.Error("Build nwg-look", err.Error())
+		f.Log.Error("Clone auto-cpufreq repo", err.Error())
 		return err
 	}
 
-	err = helper.Run("sudo", "make", "install")
+	for _, c := range p.Commands {
+		err := f.runGitCommand(c)
+		if err != nil {
+			f.Log.Error(c, err.Error())
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (f *FedoraHelper) installAdvCpMv() error {
+	f.Log.Info("Installing advcpmv")
+
+	err := helper.Run("curl", "https://raw.githubusercontent.com/jarun/advcpmv/master/install.sh", "--create-dirs", "-o", "./advcpmv/install.sh", "&&", "(cd", "advcpmv", "&&", "sh", "install.sh)")
 	if err != nil {
-		f.Log.Error("Install nwg-look", err.Error())
+		f.Log.Error("Install advcpmv", err.Error())
 		return err
 	}
 
-	_ = helper.Run("cd", f.Env.Cwd)
-	_ = helper.Run("rm", "-rf", "nwg-look")
+	err = helper.Run("sudo", "mv", "./advcpmv/advcp", "/usr/local/bin/cpg")
+	err = helper.Run("sudo", "mv", "./advcpmv/advmv", "/usr/local/bin/mvg")
+	if err != nil {
+		f.Log.Error("Move advcpmv binaries", err.Error())
+		return err
+	}
+
+	err = helper.Run("rm", "-rf", "./advcpmv")
+	if err != nil {
+		f.Log.Error("Cleanup advcpmv", err.Error())
+		return err
+	}
 
 	return nil
 }

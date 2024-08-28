@@ -44,9 +44,14 @@ func main() {
 	if err != nil {
 		os.Exit(1)
 	}
+
 	err = dh.SetupDistro()
 	if err != nil {
 		os.Exit(1)
+	}
+
+	if os.Getenv("TEST") == "true" {
+		os.Exit(0)
 	}
 
 	print("\n\n")
@@ -58,11 +63,9 @@ func main() {
 	if slices.Contains([]string{"Y", "y", ""}, in) {
 		println("Rebooting now")
 
-		if os.Getenv("TEST") != "true" {
-			err = helper.Run("sudo", "reboot")
-			if err != nil {
-				panic(err)
-			}
+		err = helper.Run("sudo", "reboot")
+		if err != nil {
+			panic(err)
 		}
 	}
 }

@@ -10,10 +10,17 @@ services:
     - bluetooth
   sddm:
     - sddm
+
 groups:
   - input
   - docker
+
 udev:
   - name: Vial
     rule: "KERNEL==\"hidraw*\", SUBSYSTEM==\"hidraw\", ATTRS{serial}==\"*vial:f64c2b3c*\", MODE=\"0660\", GROUP=\"$USER_GID\", TAG+=\"uaccess\", TAG+=\"udev-acl\""
     file: /etc/udev/rules.d/99-vial.rules
+
+firewall_rules:
+  - limit 22/tcp
+  - allow 4950/udp
+  - allow 4955/tcp

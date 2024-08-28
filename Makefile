@@ -2,7 +2,7 @@ build:
 	cd install && go build -o ../setup ./main.go
 	chmod +x ./setup
 
-run:
+install:
 	make build
 	./setup
 

@@ -59,3 +59,11 @@ git:
   nwg-look:
     url: https://github.com/nwg-piotr/nwg-look.git
     tag: v0.2.7
+    commands:
+      - cd nwg-look && make build && sudo make install
+      - rm -rf nwg-look
+  auto-cpufreq:
+    url: https://github.com/AdnanHodzic/auto-cpufreq.git
+    commands:
+      - sudo ./auto-cpufreq/auto-cpufreq-installer
+      - rm -rf auto-cpufreq
