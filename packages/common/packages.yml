@@ -26,7 +26,6 @@ base:
   # Audio
   - pamixer
   - pavucontrol
-  - pipewire-pulse
   - pipewire-alsa
   - pipewire-utils
   - playerctl

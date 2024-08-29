@@ -10,6 +10,7 @@ base:
   - wget
   - vim
   - gtk-engine-murrine
+  - pipewire-pulse
 
 nvidia:
   - nvidia

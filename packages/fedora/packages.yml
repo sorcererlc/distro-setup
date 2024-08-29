@@ -16,6 +16,7 @@ base:
   - wget2
   - vim-enhanced
   - gtk-murrine-engine
+  - pipewire-pulseaudio
   # Dependencies for building nwg-look
   - golang
   - gtk3
