@@ -49,6 +49,7 @@ func executeCommand(cmd Cmd, dir string) error {
 	c := exec.Command(cmd.Bin, cmd.Args...)
 	c.Stdout = os.Stdout
 	c.Stdin = os.Stdin
+	c.Stderr = os.Stderr
 	c.Dir = dir
 
 	err := c.Run()

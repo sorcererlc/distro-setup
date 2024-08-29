@@ -3,7 +3,7 @@ package distro
 import "setup/helper"
 
 func (f *DistroHelper) setupShell() error {
-	f.Log.Info("Setting up shell")
+	f.Log.Info("Setting up shell. Enter your password below.")
 
 	err := helper.Run("chsh", "-s", "$(which zsh)")
 	if err != nil {
