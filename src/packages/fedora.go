@@ -234,7 +234,7 @@ func (f *FedoraHelper) installAutoCpuFreq(p types.GitPackage) error {
 func (f *FedoraHelper) installAdvCpMv() error {
 	f.Log.Info("Installing advcpmv")
 
-	err := helper.Run("curl", "https://raw.githubusercontent.com/jarun/advcpmv/master/install.sh", "-o", "install.sh", "&&", "sh", "install.sh)")
+	err := helper.Run("curl", "https://raw.githubusercontent.com/jarun/advcpmv/master/install.sh", "-o", "install.sh", "&&", "./install.sh")
 	if err != nil {
 		f.Log.Error("Install advcpmv", err.Error())
 		return err
