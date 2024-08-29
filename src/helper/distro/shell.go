@@ -17,13 +17,19 @@ func (f *DistroHelper) setupShell() error {
 		return err
 	}
 
-	err = helper.Run("curl", "https://ohmyposh.dev/install.sh", "--create-dirs", "-o", "./ohmyposh/install.sh", "&&", "sh", "./ohmyposh/install.sh")
+	err = helper.Run("curl", "-O", "https://ohmyposh.dev/install.sh")
+	if err != nil {
+		f.Log.Error("Download OhMyPosh install scripts", err.Error())
+		return err
+	}
+
+	err = helper.Run("sh", "install.sh")
 	if err != nil {
 		f.Log.Error("Install OhMyPosh", err.Error())
 		return err
 	}
 
-	err = helper.Run("rm", "-rf", "ohmyposh")
+	err = helper.Run("rm", "-f", "install.sh")
 	if err != nil {
 		f.Log.Error("Cleanup OhMyPosh", err.Error())
 		return err

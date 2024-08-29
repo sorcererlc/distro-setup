@@ -272,7 +272,7 @@ func (f *FedoraHelper) installAdvCpMv() error {
 		return err
 	}
 
-	err = helper.Run("rm", "./install.sh")
+	err = helper.Run("rm", "-f", "./install.sh")
 	if err != nil {
 		f.Log.Error("Cleanup advcpmv", err.Error())
 		return err
