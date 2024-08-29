@@ -5,6 +5,8 @@ import (
 )
 
 func (f *DistroHelper) detectSensors() error {
+	_ = helper.Run("clear")
+
 	f.Log.Info("Detecting hardware sensors")
 
 	err := helper.Run("sudo", "sensors-detect")
