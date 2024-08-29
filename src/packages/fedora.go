@@ -129,12 +129,12 @@ func (f *FedoraHelper) enableCoprRepos() error {
 
 	err = yaml.Unmarshal(fs, &f.CoprRepos)
 
-	args := []string{"sudo", "dnf", "copr", "enable", "-y"}
-	args = append(args, f.CoprRepos.Copr...)
-	err = helper.Run(args...)
-	if err != nil {
-		f.Log.Error("Enable Copr repositories", err.Error())
-		return err
+	for _, r := range f.CoprRepos.Copr {
+		err = helper.Run("sudo", "dnf", "copr", "enable", "-y", r)
+		if err != nil {
+			f.Log.Error("Enable Copr repositories", err.Error())
+			return err
+		}
 	}
 
 	return nil
