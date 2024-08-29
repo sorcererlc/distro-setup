@@ -234,16 +234,22 @@ func (f *FedoraHelper) installAutoCpuFreq(p types.GitPackage) error {
 func (f *FedoraHelper) installAdvCpMv() error {
 	f.Log.Info("Installing advcpmv")
 
-	err := helper.Run("curl", "https://raw.githubusercontent.com/jarun/advcpmv/master/install.sh", "-o", "install.sh", "&&", "chmod +x install.sh", "&&", "./install.sh")
+	err := helper.Run("curl", "-O", "https://raw.githubusercontent.com/jarun/advcpmv/master/install.sh")
 	if err != nil {
-		f.Log.Error("Install advcpmv", err.Error())
+		f.Log.Error("Remove advcpmv", err.Error())
+		return err
+	}
+
+	err = helper.Run("sh", "install.sh")
+	if err != nil {
+		f.Log.Error("Build advcpmv", err.Error())
 		return err
 	}
 
 	err = helper.Run("sudo", "mv", "advcp", "/usr/local/bin/cpg")
 	err = helper.Run("sudo", "mv", "advmv", "/usr/local/bin/mvg")
 	if err != nil {
-		f.Log.Error("Move advcpmv binaries", err.Error())
+		f.Log.Error("Install advcpmv binaries", err.Error())
 		return err
 	}
 
