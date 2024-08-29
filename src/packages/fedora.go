@@ -194,6 +194,12 @@ func (f *FedoraHelper) runGitCommand(c string) error {
 func (f *FedoraHelper) setupNwgLook(p types.GitPackage) error {
 	f.Log.Info("Installing nwg-look")
 
+	_, cpe := os.Stat("/usr/bin/nwg-look")
+	if cpe == nil {
+		f.Log.Info("nwg-look is already installed, skipping")
+		return nil
+	}
+
 	err := helper.Run("git", "clone", "--recursive", "--depth", "1", "--branch", p.Tag, p.Url)
 	if err != nil {
 		f.Log.Error("Clone nwg-look repo", err.Error())
@@ -214,6 +220,12 @@ func (f *FedoraHelper) setupNwgLook(p types.GitPackage) error {
 func (f *FedoraHelper) installAutoCpuFreq(p types.GitPackage) error {
 	f.Log.Info("Installing auto-cpufreq")
 
+	_, cpe := os.Stat("/usr/local/bin/auto-cpufreq")
+	if cpe == nil {
+		f.Log.Info("auto-cpufreq is already installed, skipping")
+		return nil
+	}
+
 	err := helper.Run("git", "clone", "--recursive", "--depth", "1", p.Url)
 	if err != nil {
 		f.Log.Error("Clone auto-cpufreq repo", err.Error())
@@ -233,6 +245,13 @@ func (f *FedoraHelper) installAutoCpuFreq(p types.GitPackage) error {
 
 func (f *FedoraHelper) installAdvCpMv() error {
 	f.Log.Info("Installing advcpmv")
+
+	_, cpe := os.Stat("/usr/local/bin/cpg")
+	_, mve := os.Stat("/usr/local/bin/mvg")
+	if cpe == nil && mve == nil {
+		f.Log.Info("advcpmv is already installed, skipping")
+		return nil
+	}
 
 	err := helper.Run("curl", "-O", "https://raw.githubusercontent.com/jarun/advcpmv/master/install.sh")
 	if err != nil {

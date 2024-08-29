@@ -19,7 +19,9 @@ func Run(a ...string) error {
 		Args: append([]string{}, a...),
 	}
 
-	return executeCommand(c)
+	cwd, _ := os.Getwd()
+
+	return executeCommand(c, cwd)
 }
 
 func RunStdin(a ...string) ([]byte, error) {
@@ -33,7 +35,7 @@ func RunStdin(a ...string) ([]byte, error) {
 	return r, nil
 }
 
-func executeCommand(cmd Cmd) error {
+func executeCommand(cmd Cmd, dir string) error {
 	l := log.NewStdOutLog()
 
 	if os.Getenv("TEST") == "true" || os.Getenv("DEBUG") == "true" {
@@ -47,6 +49,7 @@ func executeCommand(cmd Cmd) error {
 	c := exec.Command(cmd.Bin, cmd.Args...)
 	c.Stdout = os.Stdout
 	c.Stdin = os.Stdin
+	c.Dir = dir
 
 	err := c.Run()
 	if err != nil {
