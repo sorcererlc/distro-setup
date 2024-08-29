@@ -6,6 +6,8 @@ import (
 )
 
 func (f *DistroHelper) setupFirewall() error {
+	_ = helper.Run("clear")
+
 	f.Log.Info("Setting up firewall rules")
 
 	err := helper.Run("sudo", "ufw", "reset")
