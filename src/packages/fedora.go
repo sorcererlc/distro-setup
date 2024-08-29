@@ -234,20 +234,20 @@ func (f *FedoraHelper) installAutoCpuFreq(p types.GitPackage) error {
 func (f *FedoraHelper) installAdvCpMv() error {
 	f.Log.Info("Installing advcpmv")
 
-	err := helper.Run("curl", "https://raw.githubusercontent.com/jarun/advcpmv/master/install.sh", "--create-dirs", "-o", "./advcpmv/install.sh", "&&", "(cd", "advcpmv", "&&", "sh", "install.sh)")
+	err := helper.Run("curl", "https://raw.githubusercontent.com/jarun/advcpmv/master/install.sh", "-o", "install.sh", "&&", "sh", "install.sh)")
 	if err != nil {
 		f.Log.Error("Install advcpmv", err.Error())
 		return err
 	}
 
-	err = helper.Run("sudo", "mv", "./advcpmv/advcp", "/usr/local/bin/cpg")
-	err = helper.Run("sudo", "mv", "./advcpmv/advmv", "/usr/local/bin/mvg")
+	err = helper.Run("sudo", "mv", "advcp", "/usr/local/bin/cpg")
+	err = helper.Run("sudo", "mv", "advmv", "/usr/local/bin/mvg")
 	if err != nil {
 		f.Log.Error("Move advcpmv binaries", err.Error())
 		return err
 	}
 
-	err = helper.Run("rm", "-rf", "./advcpmv")
+	err = helper.Run("rm", "./install.sh")
 	if err != nil {
 		f.Log.Error("Cleanup advcpmv", err.Error())
 		return err
