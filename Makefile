@@ -1,5 +1,5 @@
 build:
-	cd install && go build -o ../setup ./main.go
+	cd src && go build -o ../setup ./main.go
 	chmod +x ./setup
 
 install:

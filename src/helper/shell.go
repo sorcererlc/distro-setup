@@ -36,7 +36,7 @@ func RunStdin(a ...string) ([]byte, error) {
 func executeCommand(cmd Cmd) error {
 	l := log.NewStdOutLog()
 
-	if os.Getenv("TEST") == "true" {
+	if os.Getenv("TEST") == "true" || os.Getenv("DEBUG") == "true" {
 		l.Debug("Executing " + log.Cyan + cmd.Bin + " " + strings.Join(cmd.Args, " ") + log.Reset)
 		return nil
 	}
