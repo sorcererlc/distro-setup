@@ -36,7 +36,17 @@ func NewFlatpakHelper(c *types.Config, e *types.Environment) *FlatpakHelper {
 }
 
 func (f *FlatpakHelper) InstallPackages() error {
-	err := f.loadPackages()
+	err := helper.Run("mkdir", "-p", "$HOME/.local/share/flatpak/export/share")
+	if err != nil {
+		return nil
+	}
+
+	err = f.installRepos()
+	if err != nil {
+		return nil
+	}
+
+	err = f.loadPackages()
 	if err != nil {
 		return nil
 	}
@@ -97,7 +107,7 @@ func (f *FlatpakHelper) installPackageGroup(g []string) error {
 	return nil
 }
 
-func (f *FlatpakHelper) InstallRepos() error {
+func (f *FlatpakHelper) installRepos() error {
 	fs, err := os.ReadFile(f.Env.Cwd + "/packages/flatpak/repos.yml")
 	if err != nil {
 		f.Log.Error("Read Flatpak repo file", err.Error())
