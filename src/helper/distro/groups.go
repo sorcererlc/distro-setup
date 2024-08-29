@@ -16,10 +16,10 @@ func (f *DistroHelper) createGroup(g string) error {
 	return nil
 }
 
-func (f *DistroHelper) addUserToGroup(g string) error {
+func (f *DistroHelper) addUserToGroup(g, u string) error {
 	f.Log.Info("Adding user to group", g)
 
-	err := helper.Run("sudo", "usermod", "-aG", g, "$(whoami)")
+	err := helper.Run("sudo", "usermod", "-aG", g, u)
 	if err != nil {
 		f.Log.Error("Add user to group", g, err.Error())
 		return err

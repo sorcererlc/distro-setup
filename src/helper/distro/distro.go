@@ -54,7 +54,7 @@ func (f *DistroHelper) SetupDistro() error {
 			return err
 		}
 
-		err = f.addUserToGroup(g)
+		err = f.addUserToGroup(g, f.Env.User.Username)
 		if err != nil {
 			return err
 		}
