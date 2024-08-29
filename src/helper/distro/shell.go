@@ -5,7 +5,7 @@ import "setup/helper"
 func (f *DistroHelper) setupShell() error {
 	f.Log.Info("Setting up shell. Enter your password below.")
 
-	err := helper.Run("chsh", "-s", "$(which zsh)")
+	err := helper.Run("chsh", "-s", "/usr/bin/zsh")
 	if err != nil {
 		f.Log.Error("Change shell to zsh", err.Error())
 		return err
