@@ -7,7 +7,7 @@ import (
 func (f *DistroHelper) createGroup(g string) error {
 	f.Log.Info("Adding group", g)
 
-	err := helper.Run("sudo", "groupadd", g)
+	err := helper.Run("sudo", "groupadd", "-f", g)
 	if err != nil {
 		f.Log.Error("Add group", g, err.Error())
 		return err

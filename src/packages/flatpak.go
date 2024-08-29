@@ -36,12 +36,7 @@ func NewFlatpakHelper(c *types.Config, e *types.Environment) *FlatpakHelper {
 }
 
 func (f *FlatpakHelper) InstallPackages() error {
-	err := helper.Run("mkdir", "-p", "$HOME/.local/share/flatpak/export/share")
-	if err != nil {
-		return nil
-	}
-
-	err = f.installRepos()
+	err := f.installRepos()
 	if err != nil {
 		return nil
 	}
