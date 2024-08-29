@@ -8,7 +8,7 @@ import (
 func (f *DistroHelper) setupDotfiles(p types.GitPackage) error {
 	f.Log.Info("Setting up dotfiles")
 
-	args := []string{"git", "clone", "--depth", "1"}
+	args := []string{"git", "clone", "--depth", "1", "../dotfiles"}
 	if p.Tag != "" {
 		args = append(args, "--branch", p.Tag)
 	}
@@ -20,9 +20,7 @@ func (f *DistroHelper) setupDotfiles(p types.GitPackage) error {
 		return err
 	}
 
-	_ = helper.Run("cd", "dotfiles")
-
-	err = helper.Run("make", "install")
+	err = helper.Run("./scripts/dotfiles.sh")
 	if err != nil {
 		f.Log.Error("Setup dotfiles", err.Error())
 		return err
