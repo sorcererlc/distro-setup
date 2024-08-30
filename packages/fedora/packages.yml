@@ -27,6 +27,9 @@ base:
   - python3-devel
   - gobject-introspection-devel
 
+sway:
+  - swaylock-effects
+
 nvidia:
   - akmod-nvidia
   - libva
@@ -49,6 +52,7 @@ extras:
   - coolercontrol
   - nomacs
   - spacenavd
+  - pipewire-wineasio
 
 fonts: 
   - fira-code-fonts

@@ -45,5 +45,7 @@ aur:
   - spacenavd
   - auto-cpufreq
   - advcmpv
+  - pipewire-wineasio
+  - swaylock-effects
 
 aur_extras:
