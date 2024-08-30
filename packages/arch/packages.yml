@@ -47,5 +47,9 @@ aur:
   - advcmpv
   - pipewire-wineasio
   - swaylock-effects
+  - cava
+  - aylurs-gtk-shell
+  # Logout menu
+  - wlogout
 
 aur_extras:

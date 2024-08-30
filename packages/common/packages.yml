@@ -13,11 +13,9 @@ base:
   - yad
   - brightnessctl
   - btop
-  - cava
   - eog
   - fastfetch
   - gnome-system-monitor
-  - aylurs-gtk-shell
   - unzip
   - patch
   # File manager
@@ -28,7 +26,6 @@ base:
   - pamixer
   - pavucontrol
   - pipewire-alsa
-  - pipewire-utils
   - playerctl
   # Media
   - mpv
@@ -46,8 +43,6 @@ base:
   - waybar
   - wl-clipboard
   - cliphist
-  # Logout menu
-  - wlogout
   # Wallpaper
   - swww
   # XDG portals

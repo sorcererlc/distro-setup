@@ -17,12 +17,17 @@ base:
   - vim-enhanced
   - gtk-murrine-engine
   - pipewire-pulseaudio
+  - pipewire-utils
+  - cava
+  - aylurs-gtk-shell
   # Dependencies for building nwg-look
   - golang
   - gtk3
   - gtk3-devel
   - cairo-devel
   - glib-devel
+  # Logout menu
+  - wlogout
   # Dependencies for auto-cpufreq
   - python3-devel
   - gobject-introspection-devel
