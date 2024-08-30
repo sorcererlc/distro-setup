@@ -103,7 +103,7 @@ func (f *ArchHelper) installRepos(r []string) error {
 	}
 	f.Log.Info("Installing repositories", strings.Join(r, ", "))
 
-	args := []string{"sudo", "pacman", "-Sy"}
+	args := []string{"sudo", "pacman", "-Sy", "--needed"}
 	args = append(args, r...)
 	err := helper.Run(args...)
 	if err != nil {
