@@ -18,6 +18,7 @@ packages:
   sddm: true # install and configure sddm (including theme if dotfiles are installed)
   extras: true # Install extra packages (see extras section in distro/packages.yml)
   dotfiles: true # Install sorcerer's dotfiles
+  nvim: true # Install sorcerer's NeoVim config
 
 flatpak:
   packages:
@@ -28,3 +29,5 @@ flatpak:
 dotfiles_repo:
   url: https://github.com/sorcererlc/dotfiles.git
 
+nvim_repo:
+  url: https://github.com/sorcererlc/nvim.git

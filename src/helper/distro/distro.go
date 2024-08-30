@@ -121,6 +121,13 @@ func (f *DistroHelper) SetupDistro() error {
 		}
 	}
 
+	if f.Conf.Packages.NVim {
+		err := f.setupNeoVim(f.Conf.NVimRepo)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 

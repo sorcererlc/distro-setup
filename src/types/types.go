@@ -28,6 +28,7 @@ type Config struct {
 		Bluetooth bool `yaml:"bluetooth"`
 		Extras    bool `yaml:"extras"`
 		Dotfiles  bool `yaml:"dotfiles"`
+		NVim      bool `yaml:"nvim"`
 	} `yaml:"packages"`
 	Flatpak struct {
 		Packages struct {
@@ -38,6 +39,7 @@ type Config struct {
 		} `yaml:"packages"`
 	} `yaml:"flatpak"`
 	DotFilesRepo GitPackage `yaml:"dotfiles_repo"`
+	NVimRepo     GitPackage `yaml:"nvim_repo"`
 }
 
 type GitPackage struct {
