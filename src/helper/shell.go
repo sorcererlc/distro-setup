@@ -35,6 +35,10 @@ func RunStdin(a ...string) ([]byte, error) {
 	return r, nil
 }
 
+func ClearScreen() {
+	_ = Run("clear")
+}
+
 func executeCommand(cmd Cmd, dir string) error {
 	l := log.NewStdOutLog()
 

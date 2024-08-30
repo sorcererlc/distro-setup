@@ -69,6 +69,4 @@ git:
   auto-cpufreq:
     url: https://github.com/AdnanHodzic/auto-cpufreq.git
     commands:
-      - chmod +x ./auto-cpufreq/auto-cpufreq-installer
-      - sudo ./auto-cpufreq/auto-cpufreq-installer
-      - rm -rf auto-cpufreq
+      - ./scripts/auto-cpufreq.sh

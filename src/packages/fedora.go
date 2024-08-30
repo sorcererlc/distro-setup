@@ -7,6 +7,7 @@ import (
 	"setup/log"
 	"setup/types"
 	"strings"
+	"time"
 
 	"gopkg.in/yaml.v3"
 )
@@ -199,6 +200,7 @@ func (f *FedoraHelper) runGitCommand(c string) error {
 }
 
 func (f *FedoraHelper) setupNwgLook(p types.GitPackage) error {
+	helper.ClearScreen()
 	f.Log.Info("Installing nwg-look")
 
 	_, cpe := os.Stat("/usr/bin/nwg-look")
@@ -234,6 +236,7 @@ func (f *FedoraHelper) setupNwgLook(p types.GitPackage) error {
 }
 
 func (f *FedoraHelper) installAutoCpuFreq(p types.GitPackage) error {
+	helper.ClearScreen()
 	f.Log.Info("Installing auto-cpufreq")
 
 	_, cpe := os.Stat("/usr/local/bin/auto-cpufreq")
@@ -269,6 +272,7 @@ func (f *FedoraHelper) installAutoCpuFreq(p types.GitPackage) error {
 }
 
 func (f *FedoraHelper) installAdvCpMv() error {
+	helper.ClearScreen()
 	f.Log.Info("Installing advcpmv")
 
 	_, cpe := os.Stat("/usr/local/bin/cpg")
@@ -289,6 +293,10 @@ func (f *FedoraHelper) installAdvCpMv() error {
 		f.Log.Error("Build advcpmv", err.Error())
 		return err
 	}
+
+	helper.ClearScreen()
+	f.Log.Info("Finished building advcpmv. Copying binaries to /usr/local/bin...")
+	time.Sleep(5 * time.Second)
 
 	err = helper.Run("sudo", "mv", "advcp", "/usr/local/bin/cpg")
 	err = helper.Run("sudo", "mv", "advmv", "/usr/local/bin/mvg")

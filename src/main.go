@@ -9,10 +9,12 @@ import (
 	"setup/packages"
 	"slices"
 	"strings"
+	"time"
 )
 
 func main() {
 	log.ClearLogs()
+	l := log.NewStdOutLog()
 
 	env, err := helper.GetEnvironment()
 	if err != nil {
@@ -24,11 +26,19 @@ func main() {
 		os.Exit(1)
 	}
 
+	helper.ClearScreen()
+	l.Info("Preparing to install required packages")
+	time.Sleep(5 * time.Second)
+
 	p := packages.NewPkg(conf, env)
 	err = p.SetupPackages()
 	if err != nil {
 		os.Exit(1)
 	}
+
+	helper.ClearScreen()
+	l.Info("Preparing to install flatpak packages")
+	time.Sleep(5 * time.Second)
 
 	fp := packages.NewFlatpakHelper(conf, env)
 	err = fp.InstallPackages()
@@ -40,6 +50,10 @@ func main() {
 	if err != nil {
 		os.Exit(1)
 	}
+
+	helper.ClearScreen()
+	l.Info("Preparing to setup shell")
+	time.Sleep(5 * time.Second)
 
 	err = dh.SetupDistro()
 	if err != nil {
