@@ -3,6 +3,7 @@ package packages
 import (
 	"errors"
 	"fmt"
+	"os"
 	"setup/helper"
 	"setup/log"
 	"setup/types"
@@ -194,9 +195,15 @@ func (f *ArchHelper) checkInstalledPackage(p string) bool {
 }
 
 func (f *ArchHelper) installParu() error {
+	_, err := os.Stat("/usr/bin/paru")
+	if err == nil {
+		f.Log.Info("Paru is already installed. Moving on.")
+		return nil
+	}
+
 	f.Log.Info("Cloning paru repo")
 
-	err := helper.Run("git", "clone", "https://aur.archlinux.org/paru.git")
+	err = helper.Run("git", "clone", "https://aur.archlinux.org/paru.git")
 	if err != nil {
 		f.Log.Error("Paru repo clone", err.Error())
 		return err
