@@ -13,19 +13,19 @@ func (f *DistroHelper) setupShell() error {
 		return err
 	}
 
-	err = helper.Run("rm", "-f", "$HOME/.zshrc")
+	err = helper.Run("rm", "-f", f.Env.User.HomeDir+"/.zshrc")
 	if err != nil {
 		f.Log.Error("Remove ~/.zshrc. Please remove the file manually and try again.", err.Error())
 		return err
 	}
 
-	err = helper.Run("ln", "-s", f.Env.Cwd+"/config/home/zshrc", "$HOME/.zshrc")
+	err = helper.Run("ln", "-s", f.Env.Cwd+"/config/home/zshrc", f.Env.User.HomeDir+"/.zshrc")
 	if err != nil {
 		f.Log.Error("Link .zshrc", err.Error())
 		return err
 	}
 
-	err = helper.Run("ln", "-s", f.Env.Cwd+"/config/home/zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh", "$HOME/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh")
+	err = helper.Run("ln", "-s", f.Env.Cwd+"/config/home/zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh", f.Env.User.HomeDir+"/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh")
 	if err != nil {
 		f.Log.Error("Link .zshrc", err.Error())
 		return err

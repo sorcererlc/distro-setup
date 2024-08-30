@@ -1,12 +1,11 @@
 package types
 
+import "os/user"
+
 type Environment struct {
 	OS   OS
 	Cwd  string
-	User struct {
-		Username string
-		Gid      string
-	}
+	User *user.User
 }
 
 type OS struct {

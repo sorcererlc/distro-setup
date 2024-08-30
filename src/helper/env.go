@@ -2,6 +2,7 @@ package helper
 
 import (
 	"os"
+	"os/user"
 	"setup/log"
 	"setup/types"
 	"strings"
@@ -29,12 +30,10 @@ func GetEnvironment() (*types.Environment, error) {
 	e.OS.Version = r["VERSION"]
 	e.OS.VersionId = r["VERSION_ID"]
 
-	u, err := getUserInfo(l)
+	e.User, err = user.Current()
 	if err != nil {
 		return nil, err
 	}
-	e.User.Username = u["username"]
-	e.User.Gid = u["gid"]
 
 	return &e, nil
 }
