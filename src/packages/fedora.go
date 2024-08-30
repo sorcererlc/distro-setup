@@ -200,6 +200,15 @@ func (f *FedoraHelper) setupNwgLook(p types.GitPackage) error {
 		return nil
 	}
 
+	_, re := os.Stat("nwg-look")
+	if re == nil {
+		err := helper.Run("rm", "-rf", "nwg-look")
+		if err != nil {
+			f.Log.Error("Remove nwg-look repo", err.Error())
+			return err
+		}
+	}
+
 	err := helper.Run("git", "clone", "--recursive", "--depth", "1", "--branch", p.Tag, p.Url)
 	if err != nil {
 		f.Log.Error("Clone nwg-look repo", err.Error())
@@ -218,12 +227,21 @@ func (f *FedoraHelper) setupNwgLook(p types.GitPackage) error {
 }
 
 func (f *FedoraHelper) installAutoCpuFreq(p types.GitPackage) error {
-	f.Log.Info("Installing auto-cpufreq. Press I to install or R to remove.")
+	f.Log.Info("Installing auto-cpufreq")
 
 	_, cpe := os.Stat("/usr/local/bin/auto-cpufreq")
 	if cpe == nil {
 		f.Log.Info("auto-cpufreq is already installed, skipping")
 		return nil
+	}
+
+	_, re := os.Stat("auto-cpufreq")
+	if re == nil {
+		err := helper.Run("rm", "-rf", "auto-cpufreq")
+		if err != nil {
+			f.Log.Error("Remove auto-cpufreq repo", err.Error())
+			return err
+		}
 	}
 
 	err := helper.Run("git", "clone", "--recursive", "--depth", "1", p.Url)
