@@ -28,7 +28,6 @@ func main() {
 
 	helper.ClearScreen()
 	l.Info("Preparing to install required packages")
-	time.Sleep(5 * time.Second)
 
 	p := packages.NewPkg(conf, env)
 	err = p.SetupPackages()
@@ -38,7 +37,7 @@ func main() {
 
 	helper.ClearScreen()
 	l.Info("Preparing to install flatpak packages")
-	time.Sleep(5 * time.Second)
+	time.Sleep(3 * time.Second)
 
 	fp := packages.NewFlatpakHelper(conf, env)
 	err = fp.InstallPackages()
@@ -53,7 +52,7 @@ func main() {
 
 	helper.ClearScreen()
 	l.Info("Preparing to setup shell")
-	time.Sleep(5 * time.Second)
+	time.Sleep(3 * time.Second)
 
 	err = dh.SetupDistro()
 	if err != nil {
