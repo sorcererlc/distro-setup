@@ -25,7 +25,7 @@ func NewPkg(c *types.Config, e *types.Environment) *Pkg {
 }
 
 func (p *Pkg) loadPackageFile(fs string) (*types.Packages, error) {
-	p.Log.Info("Loading package file", fs)
+	p.Log.Debug("Loading package file", fs)
 
 	f, err := os.ReadFile(fs)
 	if err != nil {
