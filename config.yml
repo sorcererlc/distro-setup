@@ -32,3 +32,5 @@ dotfiles_repo:
 
 nvim_repo:
   url: https://github.com/sorcererlc/nvim.git
+
+shares_file: "" # Path to a yaml file containing an array of strings to be added to /etc/fstab

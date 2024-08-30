@@ -11,7 +11,13 @@ import (
 func (f *DistroHelper) setupNetworkShares() error {
 	f.Log.Info("Setting up network shares")
 
-	fs, err := os.ReadFile("./shares.yml")
+	_, err := os.Stat(f.Conf.SharesFile)
+	if err != nil {
+		f.Log.Warn("Shares file not found. Skipping network share configuration.")
+		return nil
+	}
+
+	fs, err := os.ReadFile(f.Conf.SharesFile)
 	if err != nil {
 		f.Log.Error("Load shares file", err.Error())
 		return err

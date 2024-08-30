@@ -41,6 +41,7 @@ type Config struct {
 	} `yaml:"flatpak"`
 	DotFilesRepo GitPackage `yaml:"dotfiles_repo"`
 	NVimRepo     GitPackage `yaml:"nvim_repo"`
+	SharesFile   string     `yaml:"shares_file"`
 }
 
 type GitPackage struct {
