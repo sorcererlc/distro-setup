@@ -67,6 +67,14 @@ func (f *FedoraHelper) SetupPackages(pkg *types.Packages) error {
 	}
 	p = append(p, pkg.Fonts...)
 
+	if f.Conf.Options.WindowManager == "hyprland" {
+		p = append(p, pkg.Hyprland...)
+	}
+
+	if f.Conf.Options.WindowManager == "sway" {
+		p = append(p, pkg.Sway...)
+	}
+
 	err = f.installPackages(p)
 	if err != nil {
 		return err
