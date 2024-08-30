@@ -23,4 +23,4 @@ udev:
 firewall_rules:
   - limit 22/tcp
   - allow 4950/udp
-  - allow 4955/tcp
+  - allow 4955/udp

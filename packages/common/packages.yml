@@ -19,6 +19,7 @@ base:
   - gnome-system-monitor
   - aylurs-gtk-shell
   - unzip
+  - patch
   # File manager
   - dolphin
   - ffmpegthumbnailer

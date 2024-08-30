@@ -25,6 +25,12 @@ func (f *DistroHelper) setupShell() error {
 		return err
 	}
 
+	err = helper.Run("ln", "-s", f.Env.Cwd+"/config/home/zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh", "$HOME/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh")
+	if err != nil {
+		f.Log.Error("Link .zshrc", err.Error())
+		return err
+	}
+
 	err = helper.Run("curl", "-O", "https://ohmyposh.dev/install.sh")
 	if err != nil {
 		f.Log.Error("Download OhMyPosh install scripts", err.Error())

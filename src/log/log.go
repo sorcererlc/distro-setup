@@ -108,7 +108,7 @@ func (l *Log) Info(a ...string) {
 
 func (l *Log) Warn(a ...string) {
 	t := ts()
-	ll := "INFO"
+	ll := "WARN"
 	s := args(a...)
 
 	l.writeLogFile(t, ll, s)
