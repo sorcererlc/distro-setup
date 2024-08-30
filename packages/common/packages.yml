@@ -72,8 +72,8 @@ sddm:
   - sddm
 
 remove:
-  - dunst
-  - mako
+  # - dunst
+  # - mako
 
 bluetooth:
   - bluez
