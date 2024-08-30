@@ -15,7 +15,10 @@ type FlatpakHelper struct {
 	Env    *types.Environment
 	Log    *log.Log
 	Repos  struct {
-		Base []string `yaml:"base"`
+		Base []struct {
+			Name string `yaml:"name"`
+			Url  string `yaml:"url"`
+		} `yaml:"base"`
 	}
 	Packages struct {
 		Base   []string `yaml:"base"`
@@ -115,12 +118,12 @@ func (f *FlatpakHelper) installRepos() error {
 		return err
 	}
 
-	args := []string{"flatpak", "remote-add", "--if-not-exists"}
-	args = append(args, f.Repos.Base...)
-	err = helper.Run(args...)
-	if err != nil {
-		f.Log.Error("Install Flatpak repos", err.Error())
-		return err
+	for _, r := range f.Repos.Base {
+		err = helper.Run("flatpak", "remote-add", "--if-not-exists", r.Name, r.Url)
+		if err != nil {
+			f.Log.Error("Install Flatpak repo", err.Error())
+			return err
+		}
 	}
 
 	return nil

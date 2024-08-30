@@ -1,2 +1,3 @@
 base:
-  - flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+  - name: flathub
+    url: https://dl.flathub.org/repo/flathub.flatpakrepo
