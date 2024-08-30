@@ -120,7 +120,7 @@ func (f *FlatpakHelper) installRepos() error {
 	err = helper.Run(args...)
 	if err != nil {
 		f.Log.Error("Install Flatpak repos", err.Error())
-		return nil
+		return err
 	}
 
 	return nil
