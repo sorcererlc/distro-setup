@@ -224,6 +224,7 @@ func (f *FedoraHelper) setupNwgLook(p types.GitPackage) error {
 		return err
 	}
 
+	helper.ClearScreen()
 	f.Log.Info("Installing nwg-look")
 
 	for _, c := range p.Commands {
