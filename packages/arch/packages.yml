@@ -45,7 +45,7 @@ aur:
   - spacenavd
   - auto-cpufreq
   - advcpmv
-  - wineasio
+  # - wineasio # Disabled because it fails to build at the moment.
   - swaylock-effects
   - cava
   - aylurs-gtk-shell
