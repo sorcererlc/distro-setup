@@ -10,7 +10,7 @@ func (f *DistroHelper) setupFirewall() error {
 
 	f.Log.Info("Setting up firewall rules")
 
-	err := helper.Run("sudo", "ufw", "reset")
+	err := helper.Run("sh", "scripts/firewall.sh")
 	for _, r := range f.DistroConfig.Firewall {
 		a := strings.Split(r, " ")
 		err = helper.Run("sudo", "ufw", a[0], a[1])
