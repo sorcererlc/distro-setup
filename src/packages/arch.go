@@ -44,6 +44,11 @@ func (f *ArchHelper) SetupPackages(pkg *types.Packages) error {
 		return err
 	}
 
+	err = f.installParu()
+	if err != nil {
+		return err
+	}
+
 	p := pkg.Base
 	if f.Conf.Packages.Extras {
 		p = append(p, pkg.Extras...)
@@ -98,12 +103,16 @@ func (f *ArchHelper) updateDistro() error {
 }
 
 func (f *ArchHelper) installRepos(r []string) error {
+	if len(r) == 0 {
+		return nil
+	}
+
 	for i := 0; i < len(r); i++ {
 		r[i] = fmt.Sprintf(r[i], f.Env.OS.VersionId)
 	}
 	f.Log.Info("Installing repositories", strings.Join(r, ", "))
 
-	args := []string{"sudo", "pacman", "-Sy", "--needed"}
+	args := []string{"sudo", "pacman", "-Sy", "--needed", "--noconfirm"}
 	args = append(args, r...)
 	err := helper.Run(args...)
 	if err != nil {
@@ -135,7 +144,7 @@ func (f *ArchHelper) removePackages(p []string) error {
 func (f *ArchHelper) installPackages(p []string) error {
 	f.Log.Info("Installing packages", strings.Join(p, ", "))
 
-	args := []string{"sudo", "pacman", "-Sy", "--needed"}
+	args := []string{"sudo", "pacman", "-Sy", "--needed", "--noconfirm"}
 	args = append(args, p...)
 	err := helper.Run(args...)
 	if err != nil {
