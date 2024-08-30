@@ -13,7 +13,7 @@ LINES=(
 # Uncomment specified lines if they are commented out
 for LINE in "${LINES[@]}"; do
     if grep -q "^#$LINE" "$PACMAN_CONF"; then
-        sudo sed -i "s/^#$line/$line/" "$PACMAN_CONF"
+        sudo sed -i "s/^#$LINE/$LINE/" "$PACMAN_CONF"
     fi
 done
 
