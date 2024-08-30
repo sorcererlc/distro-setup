@@ -183,3 +183,21 @@ func (f *ArchHelper) checkInstalledPackage(p string) bool {
 
 	return true
 }
+
+func (f *ArchHelper) installParu() error {
+	f.Log.Info("Cloning paru repo")
+
+	err := helper.Run("git", "clone", "https://aur.archlinux.org/paru.git")
+	if err != nil {
+		f.Log.Error("Paru repo clone", err.Error())
+		return err
+	}
+
+	err = helper.Run("./scripts/paru.sh")
+	if err != nil {
+		f.Log.Error("Install paru", err.Error())
+		return err
+	}
+
+	return nil
+}
