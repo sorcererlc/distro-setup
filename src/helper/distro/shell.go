@@ -25,6 +25,12 @@ func (f *DistroHelper) setupShell() error {
 		return err
 	}
 
+	err = helper.Run("mkdir", "-p", f.Env.User.HomeDir+"/.zsh")
+	if err != nil {
+		f.Log.Error("Creath $HOME/.zsh", err.Error())
+		return err
+	}
+
 	err = helper.Run("ln", "-s", f.Env.Cwd+"/config/home/zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh", f.Env.User.HomeDir+"/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh")
 	if err != nil {
 		f.Log.Error("Link .zshrc", err.Error())
