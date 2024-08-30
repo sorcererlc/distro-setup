@@ -134,6 +134,13 @@ func (f *DistroHelper) SetupDistro() error {
 		}
 	}
 
+	if f.Conf.Options.AutoLogin {
+		err := f.setupAutoLogin()
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -157,6 +164,24 @@ func (f *DistroHelper) writeFile(fs string, s string, a bool, su bool) error {
 
 	err := helper.Run(args...)
 	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (f *DistroHelper) setupAutoLogin() error {
+	fs := "[Autologin]\nUser=" + f.Env.User.Username + "\nSession=" + f.Conf.Options.WindowManager
+
+	err := os.WriteFile("autologin.conf", []byte(fs), 0644)
+	if err != nil {
+		f.Log.Error("Write autologin file", err.Error())
+		return err
+	}
+
+	err = helper.Run("sudo", "mv", "autologin.conf", "/etc/sddm.conf.d/")
+	if err != nil {
+		f.Log.Error("Move autologin.conf to /etc/sddm.conf.d/", err.Error())
 		return err
 	}
 

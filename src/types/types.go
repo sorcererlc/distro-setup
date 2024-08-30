@@ -21,6 +21,7 @@ type Config struct {
 		WindowManager string `yaml:"window_manager"`
 		Firewall      bool   `yaml:"firewall"`
 		NetworkShares bool   `yaml:"network_shares"`
+		AutoLogin     bool   `yaml:"auto_login"`
 	} `yaml:"options"`
 	Packages struct {
 		Nvidia    bool `yaml:"nvidia"`

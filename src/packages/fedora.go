@@ -201,7 +201,7 @@ func (f *FedoraHelper) runGitCommand(c string) error {
 
 func (f *FedoraHelper) setupNwgLook(p types.GitPackage) error {
 	helper.ClearScreen()
-	f.Log.Info("Installing nwg-look")
+	f.Log.Info("Cloning nwg-look repo")
 
 	_, cpe := os.Stat("/usr/bin/nwg-look")
 	if cpe == nil {
@@ -223,6 +223,8 @@ func (f *FedoraHelper) setupNwgLook(p types.GitPackage) error {
 		f.Log.Error("Clone nwg-look repo", err.Error())
 		return err
 	}
+
+	f.Log.Info("Installing nwg-look")
 
 	for _, c := range p.Commands {
 		err := f.runGitCommand(c)

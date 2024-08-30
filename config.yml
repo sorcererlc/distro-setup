@@ -2,6 +2,7 @@ options:
   window_manager: "hyprland" # hyprland or sway
   firewall: true
   network_shares: true
+  auto_login: true
 
 # To map network shares you have to create a shares.yml file with an array of strings which will be added to /etc/fstab:
 
