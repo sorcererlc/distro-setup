@@ -135,7 +135,7 @@ func (f *ArchHelper) removePackages(p []string) error {
 func (f *ArchHelper) installPackages(p []string) error {
 	f.Log.Info("Installing packages", strings.Join(p, ", "))
 
-	args := []string{"sudo", "pacman", "-Sy"}
+	args := []string{"sudo", "pacman", "-Sy", "--needed"}
 	args = append(args, p...)
 	err := helper.Run(args...)
 	if err != nil {
