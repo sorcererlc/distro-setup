@@ -38,12 +38,12 @@ func NewFlatpakHelper(c *types.Config, e *types.Environment) *FlatpakHelper {
 func (f *FlatpakHelper) InstallPackages() error {
 	err := f.installRepos()
 	if err != nil {
-		return nil
+		return err
 	}
 
 	err = f.loadPackages()
 	if err != nil {
-		return nil
+		return err
 	}
 
 	err = f.installPackageGroup(f.Packages.Base)
