@@ -237,7 +237,7 @@ func (f *FedoraHelper) setupNwgLook(p types.GitPackage) error {
 
 func (f *FedoraHelper) installAutoCpuFreq(p types.GitPackage) error {
 	helper.ClearScreen()
-	f.Log.Info("Installing auto-cpufreq")
+	f.Log.Info("Cloning auto-cpufreq repo")
 
 	_, cpe := os.Stat("/usr/local/bin/auto-cpufreq")
 	if cpe == nil {
@@ -259,6 +259,8 @@ func (f *FedoraHelper) installAutoCpuFreq(p types.GitPackage) error {
 		f.Log.Error("Clone auto-cpufreq repo", err.Error())
 		return err
 	}
+
+	f.Log.Info("Installing auto-cpufreq")
 
 	for _, c := range p.Commands {
 		err := f.runGitCommand(c)
