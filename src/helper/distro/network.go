@@ -40,17 +40,17 @@ func (f *DistroHelper) setupNetworkShares() error {
 			return err
 		}
 
+		err = helper.Run("sudo", "chown", "-R", f.Env.User.Username+":"+f.Env.User.Username, d)
+		if err != nil {
+			f.Log.Error("Change mount point owner", err.Error())
+			return err
+		}
+
 		err = helper.Run("echo", s, "|", "sudo", "tee", "-a", "/etc/fstab")
 		if err != nil {
 			f.Log.Error("Add network share")
 			return err
 		}
-	}
-
-	err = helper.Run("sudo", "chown", "-R", f.Env.User.Username+":"+f.Env.User.Username, "/mnt/*")
-	if err != nil {
-		f.Log.Error("Change mount point owner", err.Error())
-		return err
 	}
 
 	return nil

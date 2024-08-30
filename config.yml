@@ -1,7 +1,7 @@
 options:
   window_manager: "hyprland" # hyprland or sway
   firewall: true
-  network_shares: true
+  network_shares: false # Disabled until I figure a good way to do it
   auto_login: true
 
 # To map network shares you have to create a shares.yml file with an array of strings which will be added to /etc/fstab:
@@ -33,4 +33,4 @@ dotfiles_repo:
 nvim_repo:
   url: https://github.com/sorcererlc/nvim.git
 
-shares_file: "" # Path to a yaml file containing an array of strings to be added to /etc/fstab
+shares_file: "shares.yml" # Path to a yaml file containing an array of strings to be added to /etc/fstab
