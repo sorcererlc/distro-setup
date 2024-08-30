@@ -23,12 +23,15 @@ base:
   - gtk3-devel
   - cairo-devel
   - glib-devel
+  # Dependencies for auto-cpufreq
+  - python3-devel
+  - gobject-introspection-devel
 
 nvidia:
   - akmod-nvidia
   - libva
   - libva-nvidia-driver
-  - xorg-x11-drv-nvidia-cuda
+  # - xorg-x11-drv-nvidia-cuda
 
 bluetooth:
   - bluez-tools
