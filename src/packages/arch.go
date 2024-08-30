@@ -88,6 +88,13 @@ func (f *ArchHelper) SetupPackages(pkg *types.Packages) error {
 		return err
 	}
 
+	if f.Conf.Packages.Nvidia {
+		err := f.setupNvidia()
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -212,6 +219,18 @@ func (f *ArchHelper) installParu() error {
 	err = helper.Run("./scripts/paru.sh")
 	if err != nil {
 		f.Log.Error("Install paru", err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (f *ArchHelper) setupNvidia() error {
+	f.Log.Info("Setting up NVIDIA driver")
+
+	err := helper.Run("./scripts/arch-nvidia.sh")
+	if err != nil {
+		f.Log.Error("Setup NVIDIA driver", err.Error())
 		return err
 	}
 
