@@ -15,7 +15,7 @@ func (f *DistroHelper) setupShell() error {
 
 	err = helper.Run("rm", "-f", f.Env.User.HomeDir+"/.zshrc")
 	if err != nil {
-		f.Log.Error("Remove ~/.zshrc. Please remove the file manually and try again.", err.Error())
+		f.Log.Error("Remove "+f.Env.User.HomeDir+"/.zshrc. Please remove the file manually and try again.", err.Error())
 		return err
 	}
 
@@ -27,7 +27,7 @@ func (f *DistroHelper) setupShell() error {
 
 	err = helper.Run("mkdir", "-p", f.Env.User.HomeDir+"/.zsh")
 	if err != nil {
-		f.Log.Error("Creath $HOME/.zsh", err.Error())
+		f.Log.Error("Creath "+f.Env.User.HomeDir+"/.zsh", err.Error())
 		return err
 	}
 

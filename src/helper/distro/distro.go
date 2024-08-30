@@ -76,6 +76,12 @@ func (f *DistroHelper) SetupDistro() error {
 				return err
 			}
 		}
+
+		err := helper.Run("sudo", "systemctl", "set-default", "graphical.target")
+		if err != nil {
+			f.Log.Error("Set default graphical target", err.Error())
+			return err
+		}
 	}
 
 	err := f.detectSensors()
