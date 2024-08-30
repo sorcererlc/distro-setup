@@ -49,27 +49,20 @@ func (f *FlatpakHelper) InstallPackages() error {
 		return err
 	}
 
-	err = f.installPackageGroup(f.Packages.Base)
-	if err != nil {
-		return err
-	}
+	p := f.Packages.Base
 	if f.Config.Flatpak.Packages.Devel {
-		err := f.installPackageGroup(f.Packages.Devel)
-		if err != nil {
-			return err
-		}
+		p = append(p, f.Packages.Devel...)
 	}
 	if f.Config.Flatpak.Packages.Extras {
-		err := f.installPackageGroup(f.Packages.Extras)
-		if err != nil {
-			return err
-		}
+		p = append(p, f.Packages.Extras...)
 	}
 	if f.Config.Flatpak.Packages.Misc {
-		err := f.installPackageGroup(f.Packages.Misc)
-		if err != nil {
-			return err
-		}
+		p = append(p, f.Packages.Misc...)
+	}
+
+	err = f.installPackageGroup(p)
+	if err != nil {
+		return err
 	}
 
 	return nil
