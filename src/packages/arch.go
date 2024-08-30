@@ -115,6 +115,10 @@ func (f *ArchHelper) installRepos(r []string) error {
 }
 
 func (f *ArchHelper) removePackages(p []string) error {
+	if len(p) == 0 {
+		return nil
+	}
+
 	f.Log.Info("Removing packages", strings.Join(p, ", "))
 
 	args := []string{"sudo", "pacman", "-Rs"}
