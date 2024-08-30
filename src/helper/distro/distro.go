@@ -171,9 +171,17 @@ func (f *DistroHelper) writeFile(fs string, s string, a bool, su bool) error {
 }
 
 func (f *DistroHelper) setupAutoLogin() error {
+	f.Log.Info("Setting up auto login")
+
+	err := helper.Run("sudo", "mkdir", "-p", "/etc/sddm.conf.d")
+	if err != nil {
+		f.Log.Error("Create /etc/sddm.conf.d", err.Error())
+		return err
+	}
+
 	fs := "[Autologin]\nUser=" + f.Env.User.Username + "\nSession=" + f.Conf.Options.WindowManager
 
-	err := os.WriteFile("autologin.conf", []byte(fs), 0644)
+	err = os.WriteFile("autologin.conf", []byte(fs), 0644)
 	if err != nil {
 		f.Log.Error("Write autologin file", err.Error())
 		return err
