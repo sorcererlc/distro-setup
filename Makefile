@@ -8,4 +8,4 @@ install:
 
 test:
 	make build
-	TEST=true ./setup
+	TEST=true DEBUG=true ./setup

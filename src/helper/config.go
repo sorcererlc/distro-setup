@@ -13,7 +13,7 @@ func GetConfig(e *types.Environment) (*types.Config, error) {
 	conf := types.Config{}
 
 	fs := e.Cwd + "/config.yml"
-	l.Info("Loading config file", fs)
+	l.Debug("Loading config file", fs)
 
 	f, err := os.ReadFile(fs)
 	if err != nil {
