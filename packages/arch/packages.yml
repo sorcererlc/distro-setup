@@ -44,8 +44,8 @@ aur:
   - nomacs
   - spacenavd
   - auto-cpufreq
-  - advcmpv
-  - pipewire-wineasio
+  - advcpmv
+  - wineasio
   - swaylock-effects
   - cava
   - aylurs-gtk-shell
