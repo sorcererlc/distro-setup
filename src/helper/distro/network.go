@@ -41,7 +41,7 @@ func (f *DistroHelper) setupNetworkShares() error {
 		}
 	}
 
-	err = helper.Run("sudo", "chown", "-R", "$USER:$USER", "/mnt/*")
+	err = helper.Run("sudo", "chown", "-R", f.Env.User.Username+":"+f.Env.User.Username, "/mnt/*")
 	if err != nil {
 		f.Log.Error("Change mount point owner", err.Error())
 		return err
