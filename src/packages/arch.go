@@ -117,7 +117,7 @@ func (f *ArchHelper) installRepos(r []string) error {
 func (f *ArchHelper) removePackages(p []string) error {
 	f.Log.Info("Removing packages", strings.Join(p, ", "))
 
-	args := []string{"sudo", "pacman", "-Rsy"}
+	args := []string{"sudo", "pacman", "-Rs"}
 	args = append(args, p...)
 	err := helper.Run(args...)
 	if err != nil {
