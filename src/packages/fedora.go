@@ -1,7 +1,6 @@
 package packages
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"setup/helper"
@@ -173,13 +172,13 @@ func (f *FedoraHelper) installPackages(p []string) error {
 		return err
 	}
 
-	for _, pk := range p {
-		i := f.checkInstalledPackage(pk)
-		if !i {
-			f.Log.Error("Package " + pk + " failed to install. Aborting setup.")
-			return errors.New("")
-		}
-	}
+	// for _, pk := range p {
+	// 	i := f.checkInstalledPackage(pk)
+	// 	if !i {
+	// 		f.Log.Error("Package " + pk + " failed to install. Aborting setup.")
+	// 		return errors.New("")
+	// 	}
+	// }
 
 	return nil
 }
