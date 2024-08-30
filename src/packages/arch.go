@@ -95,6 +95,11 @@ func (f *ArchHelper) SetupPackages(pkg *types.Packages) error {
 		}
 	}
 
+	err = f.setupPacman()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -231,6 +236,18 @@ func (f *ArchHelper) setupNvidia() error {
 	err := helper.Run("./scripts/arch-nvidia.sh")
 	if err != nil {
 		f.Log.Error("Setup NVIDIA driver", err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (f *ArchHelper) setupPacman() error {
+	f.Log.Info("Setting up pacman")
+
+	err := helper.Run("./scripts/pacman.sh")
+	if err != nil {
+		f.Log.Error("Setup pacman", err.Error())
 		return err
 	}
 
