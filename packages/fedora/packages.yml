@@ -11,7 +11,6 @@ base:
   - python3-pip
   - python3-pyquery
   - qt6-qtsvg
-  - rofi-wayland
   - SwayNotificationCenter
   - wget2
   - vim-enhanced

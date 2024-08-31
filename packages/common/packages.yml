@@ -50,6 +50,8 @@ base:
   - xdg-desktop-portal-gtk
   - xdg-user-dirs
   - xdg-utils
+  # UI
+  - rofi-wayland
 
 hyprland:
   - hyprland

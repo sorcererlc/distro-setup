@@ -14,6 +14,9 @@ zgenom autoupdate
 # Load Catppuccin theme
 source $HOME/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
 
+# Load secrets file
+source $HOME/.secrets
+
 # Environment
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 export PATH="$PATH:$HOME/.local/bin"
