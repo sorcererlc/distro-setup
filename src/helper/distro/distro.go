@@ -139,6 +139,13 @@ func (f *DistroHelper) SetupDistro() error {
 		if err != nil {
 			return err
 		}
+
+		if !f.Conf.Packages.Sddm {
+			err := f.setupWindowManagerAutostart()
+			if err != nil {
+				return err
+			}
+		}
 	}
 
 	return nil
@@ -171,25 +178,51 @@ func (f *DistroHelper) writeFile(fs string, s string, a bool, su bool) error {
 }
 
 func (f *DistroHelper) setupAutoLogin() error {
-	f.Log.Info("Setting up auto login")
+	if f.Conf.Packages.Sddm {
+		f.Log.Info("Setting up auto SDDM login")
 
-	err := helper.Run("sudo", "mkdir", "-p", "/etc/sddm.conf.d")
-	if err != nil {
-		f.Log.Error("Create /etc/sddm.conf.d", err.Error())
-		return err
+		err := helper.Run("sudo", "mkdir", "-p", "/etc/sddm.conf.d")
+		if err != nil {
+			f.Log.Error("Create /etc/sddm.conf.d", err.Error())
+			return err
+		}
+
+		fs := "[Autologin]\nRelogin=false\nUser=" + f.Env.User.Username + "\nSession=" + f.Conf.Options.WindowManager
+
+		err = os.WriteFile("autologin.conf", []byte(fs), 0644)
+		if err != nil {
+			f.Log.Error("Write autologin file", err.Error())
+			return err
+		}
+
+		err = helper.Run("sudo", "mv", "autologin.conf", "/etc/sddm.conf.d/")
+		if err != nil {
+			f.Log.Error("Move autologin.conf to /etc/sddm.conf.d/", err.Error())
+			return err
+		}
+
+		return nil
 	}
 
-	fs := "[Autologin]\nUser=" + f.Env.User.Username + "\nSession=" + f.Conf.Options.WindowManager
+	f.Log.Info("Setting up TTY autologin")
 
-	err = os.WriteFile("autologin.conf", []byte(fs), 0644)
+	err := helper.Run("./scripts/autologin.conf")
 	if err != nil {
 		f.Log.Error("Write autologin file", err.Error())
 		return err
 	}
 
-	err = helper.Run("sudo", "mv", "autologin.conf", "/etc/sddm.conf.d/")
+	return nil
+}
+
+func (f *DistroHelper) setupWindowManagerAutostart() error {
+	f.Log.Info("Setting up " + f.Conf.Options.WindowManager + " autostart")
+
+	fs := "if [ -z \"$WAYLAND_DISPLAY\" ] && [ \"$XDG_VTNR\" -eq 1 ]; then\n  exec " + f.Conf.Options.WindowManager + "\nfi"
+
+	err := os.WriteFile(f.Env.User.HomeDir+"/.zprofile", []byte(fs), 0744)
 	if err != nil {
-		f.Log.Error("Move autologin.conf to /etc/sddm.conf.d/", err.Error())
+		f.Log.Error("Write .zprofile", err.Error())
 		return err
 	}
 

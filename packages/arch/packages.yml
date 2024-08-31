@@ -11,6 +11,12 @@ base:
   - vim
   - gtk-engine-murrine
   - pipewire-pulse
+  - man
+
+sway:
+  - foot # Default terminal in sway
+  - swaybg
+  - xorg-xwayland
 
 nvidia:
   - nvidia

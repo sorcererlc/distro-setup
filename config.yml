@@ -2,7 +2,7 @@ options:
   window_manager: "hyprland" # hyprland or sway
   firewall: true
   network_shares: false # Disabled until I figure a good way to do it
-  auto_login: true
+  auto_login: false # TODO Find out why SDDM breaks when using autologin on arch
 
 # To map network shares you have to create a shares.yml file with an array of strings which will be added to /etc/fstab:
 
