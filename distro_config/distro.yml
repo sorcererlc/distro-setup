@@ -11,6 +11,11 @@ services:
   sddm:
     - sddm
 
+shell:
+  # hyprland:
+  - hyprpm add https://github.com/outfoxxed/hy3
+  - hyprpm enable hy3
+
 groups:
   - input
   - docker

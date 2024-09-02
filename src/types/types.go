@@ -78,4 +78,5 @@ type DistroConfig struct {
 		File string `yaml:"file"`
 	} `yaml:"udev"`
 	Firewall []string `yaml:"firewall_rules"`
+	Shell    []string `yaml:"shell"`
 }

@@ -5,6 +5,7 @@ import (
 	"setup/helper"
 	"setup/log"
 	"setup/types"
+	"strings"
 
 	"gopkg.in/yaml.v3"
 )
@@ -43,6 +44,8 @@ func (f *DistroHelper) LoadConfig() error {
 	err = yaml.Unmarshal(fs, &c)
 
 	f.DistroConfig = &c
+
+	fs, err = os.ReadFile("./")
 
 	return nil
 }
@@ -148,6 +151,13 @@ func (f *DistroHelper) SetupDistro() error {
 		}
 	}
 
+	if len(f.DistroConfig.Shell) > 0 {
+		err := f.runShellCommands(f.DistroConfig.Shell)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -224,6 +234,19 @@ func (f *DistroHelper) setupWindowManagerAutostart() error {
 	if err != nil {
 		f.Log.Error("Write .zprofile", err.Error())
 		return err
+	}
+
+	return nil
+}
+
+func (f *DistroHelper) runShellCommands(cs []string) error {
+	for _, c := range cs {
+		args := strings.Split(c, " ")
+		err := helper.Run(args...)
+		if err != nil {
+			f.Log.Error("Run command", c, err.Error())
+			return err
+		}
 	}
 
 	return nil

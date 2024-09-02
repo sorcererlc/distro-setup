@@ -48,7 +48,7 @@ fi
 
 
 # Alias all the things
-alias ls="exa -lh -g --time-style=long-iso --git --icons"
+alias ll="exa -lh -g --time-style=long-iso --git --icons"
 alias cp="cpg -g"
 alias mv="mvg -g"
 alias cat="bat"
