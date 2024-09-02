@@ -151,6 +151,13 @@ func (f *DistroHelper) SetupDistro() error {
 		}
 	}
 
+	if len(f.DistroConfig.Shell.Base) > 0 {
+		err := f.runShellCommands(f.DistroConfig.Shell.Base)
+		if err != nil {
+			return err
+		}
+	}
+
 	if f.Conf.Options.WindowManager == "hyprland" {
 		err := f.runShellCommands(f.DistroConfig.Shell.Hyprland)
 		if err != nil {

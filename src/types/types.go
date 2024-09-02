@@ -79,6 +79,7 @@ type DistroConfig struct {
 	} `yaml:"udev"`
 	Firewall []string `yaml:"firewall_rules"`
 	Shell    struct {
+		Base     []string `yaml:"base"`
 		Hyprland []string `yaml:"hyprland"`
 	} `yaml:"shell"`
 }
