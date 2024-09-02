@@ -7,7 +7,6 @@ import (
 	"setup/log"
 	"setup/types"
 	"strings"
-	"time"
 
 	"gopkg.in/yaml.v3"
 )
@@ -301,7 +300,6 @@ func (f *FedoraHelper) installAdvCpMv() error {
 
 	helper.ClearScreen()
 	f.Log.Info("Finished building advcpmv. Copying binaries to /usr/local/bin...")
-	time.Sleep(3 * time.Second)
 
 	err = helper.Run("sudo", "mv", "advcp", "/usr/local/bin/cpg")
 	err = helper.Run("sudo", "mv", "advmv", "/usr/local/bin/mvg")
