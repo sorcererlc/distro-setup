@@ -31,6 +31,10 @@ base:
   - python3-devel
   - gobject-introspection-devel
 
+hyprland:
+  - hyprland-devel
+  - pyprland
+
 sway:
   - swaylock-effects
 

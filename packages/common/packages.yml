@@ -55,11 +55,9 @@ base:
 
 hyprland:
   - hyprland
-  - hyprland-devel
   - hyprcursor
   - hypridle
   - hyprlock
-  - pyprland
 
 sway:
   - sway

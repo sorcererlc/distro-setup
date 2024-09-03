@@ -57,5 +57,6 @@ aur:
   - aylurs-gtk-shell
   # Logout menu
   - wlogout
+  - pyprland
 
 aur_extras:
