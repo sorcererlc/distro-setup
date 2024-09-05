@@ -223,7 +223,7 @@ func (f *DistroHelper) setupAutoLogin() error {
 
 	f.Log.Info("Setting up TTY autologin")
 
-	err := helper.Run("./scripts/autologin.conf")
+	err := helper.Run("./scripts/autologin.sh")
 	if err != nil {
 		f.Log.Error("Write autologin file", err.Error())
 		return err
