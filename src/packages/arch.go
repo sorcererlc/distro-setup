@@ -157,21 +157,19 @@ func (f *ArchHelper) removePackages(p []string) error {
 func (f *ArchHelper) installPackages(p []string) error {
 	f.Log.Info("Installing packages", strings.Join(p, ", "))
 
-	args := []string{"sudo", "pacman", "-Sy", "--needed", "--noconfirm"}
-	args = append(args, p...)
-	err := helper.Run(args...)
-	if err != nil {
-		f.Log.Error("Install packages", err.Error())
-		return err
-	}
+	for _, pk := range p {
+		err := helper.Run("sudo", "pacman", "-Sy", "--needed", "--noconfirm", pk)
+		if err != nil {
+			f.Log.Error("Install packages", err.Error())
+			return err
+		}
 
-	// for _, pk := range p {
-	// 	i := f.checkInstalledPackage(pk)
-	// 	if !i {
-	// 		f.Log.Error("Package " + pk + " failed to install. Aborting setup.")
-	// 		return errors.New("")
-	// 	}
-	// }
+		i := f.checkInstalledPackage(pk)
+		if !i {
+			f.Log.Error("Package " + pk + " failed to install. Aborting setup.")
+			return errors.New("")
+		}
+	}
 
 	return nil
 }
@@ -179,21 +177,21 @@ func (f *ArchHelper) installPackages(p []string) error {
 func (f *ArchHelper) installAurPackages(p []string) error {
 	f.Log.Info("Installing AUR packages", strings.Join(p, ", "))
 
-	args := []string{"paru", "-Sy"}
-	args = append(args, p...)
-	err := helper.Run(args...)
-	if err != nil {
-		f.Log.Error("Install AUR packages", err.Error())
-		return err
-	}
-
 	for _, pk := range p {
+		args := []string{"paru", "-Sy", pk}
+		err := helper.Run(args...)
+		if err != nil {
+			f.Log.Error("Install AUR packages", err.Error())
+			return err
+		}
+
 		i := f.checkInstalledPackage(pk)
 		if !i {
 			f.Log.Error("Package " + pk + " failed to install. Aborting setup.")
 			return errors.New("")
 		}
 	}
+
 	return nil
 }
 

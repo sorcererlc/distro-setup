@@ -1,6 +1,7 @@
 package packages
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"setup/helper"
@@ -164,21 +165,19 @@ func (f *FedoraHelper) removePackages(p []string) error {
 func (f *FedoraHelper) installPackages(p []string) error {
 	f.Log.Info("Installing packages", strings.Join(p, ", "))
 
-	args := []string{"sudo", "dnf", "install", "-y"}
-	args = append(args, p...)
-	err := helper.Run(args...)
-	if err != nil {
-		f.Log.Error("Install packages", err.Error())
-		return err
-	}
+	for _, pk := range p {
+		err := helper.Run("sudo", "dnf", "install", "-y", pk)
+		if err != nil {
+			f.Log.Error("Install packages", err.Error())
+			return err
+		}
 
-	// for _, pk := range p {
-	// 	i := f.checkInstalledPackage(pk)
-	// 	if !i {
-	// 		f.Log.Error("Package " + pk + " failed to install. Aborting setup.")
-	// 		return errors.New("")
-	// 	}
-	// }
+		i := f.checkInstalledPackage(pk)
+		if !i {
+			f.Log.Error("Package " + pk + " failed to install. Aborting setup.")
+			return errors.New("")
+		}
+	}
 
 	return nil
 }
