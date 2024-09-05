@@ -44,7 +44,7 @@ fonts:
   - ttf-jetbrains-mono-nerd 
 
 aur:
-  - input-remapper-git
+  # - input-remapper-git
   - coolercontrol
   - flatseal
   - nomacs
@@ -58,5 +58,6 @@ aur:
   # Logout menu
   - wlogout
   - pyprland
+  - kbct-git
 
 aur_extras:
