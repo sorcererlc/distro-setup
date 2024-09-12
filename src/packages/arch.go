@@ -13,34 +13,36 @@ import (
 type ArchHelper struct {
 	Conf      *types.Config
 	Env       *types.Environment
+	Packages  *types.Packages
 	Log       *log.Log
 	CoprRepos struct {
 		Copr []string `yaml:"copr"`
 	}
 }
 
-func NewArchHelper(c *types.Config, e *types.Environment) *ArchHelper {
+func NewArchHelper(c *types.Config, e *types.Environment, p *types.Packages) *ArchHelper {
 	f := ArchHelper{
-		Conf: c,
-		Env:  e,
-		Log:  log.NewLog("packages.log"),
+		Conf:     c,
+		Env:      e,
+		Packages: p,
+		Log:      log.NewLog("packages.log"),
 	}
 
 	return &f
 }
 
-func (f *ArchHelper) SetupPackages(pkg *types.Packages) error {
+func (f *ArchHelper) SetupDistro() error {
 	err := f.updateDistro()
 	if err != nil {
 		return err
 	}
 
-	err = f.removePackages(pkg.Remove)
+	err = f.removePackages(f.Packages.Remove)
 	if err != nil {
 		return err
 	}
 
-	err = f.installRepos(pkg.Repo)
+	err = f.installRepos(f.Packages.Repo)
 	if err != nil {
 		return err
 	}
@@ -50,52 +52,81 @@ func (f *ArchHelper) SetupPackages(pkg *types.Packages) error {
 		return err
 	}
 
-	p := pkg.Base
-	if f.Conf.Packages.Extras {
-		p = append(p, pkg.Extras...)
-	}
-	if f.Conf.Packages.Sddm {
-		p = append(p, pkg.Sddm...)
-	}
-	if f.Conf.Packages.Bluetooth {
-		p = append(p, pkg.Bluetooth...)
-	}
-	if f.Conf.Packages.Nvidia {
-		p = append(p, pkg.Nvidia...)
-	}
-	p = append(p, pkg.Fonts...)
-
-	if f.Conf.Options.WindowManager == "hyprland" {
-		p = append(p, pkg.Hyprland...)
-	}
-
-	if f.Conf.Options.WindowManager == "sway" {
-		p = append(p, pkg.Sway...)
-	}
-
-	err = f.installPackages(p)
-	if err != nil {
-		return err
-	}
-
-	p = pkg.Aur
-	if f.Conf.Packages.Extras {
-		p = append(p, pkg.AurExtra...)
-	}
-
-	err = f.installAurPackages(p)
-	if err != nil {
-		return err
-	}
-
-	if f.Conf.Packages.Nvidia {
-		err := f.setupNvidia()
-		if err != nil {
-			return err
-		}
-	}
-
 	err = f.setupPacman()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (f *ArchHelper) InstallBasePackages() error {
+	err := f.installPackages(f.Packages.Base)
+	if err != nil {
+		return err
+	}
+
+	err = f.installPackages(f.Packages.Fonts)
+	if err != nil {
+		return err
+	}
+
+	err = f.installAurPackages(f.Packages.Aur)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (f *ArchHelper) InstallExtraPackages() error {
+	err := f.installPackages(f.Packages.Extras)
+	if err != nil {
+		return err
+	}
+
+	err = f.installAurPackages(f.Packages.AurExtra)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (f *ArchHelper) InstallNvidia() error {
+	err := f.installPackages(f.Packages.Nvidia)
+	if err != nil {
+		return err
+	}
+
+	err = f.setupNvidia()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (f *ArchHelper) InstallSddm() error {
+	err := f.installPackages(f.Packages.Sddm)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (f *ArchHelper) InstallHyprland() error {
+	err := f.installPackages(f.Packages.Hyprland)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (f *ArchHelper) InstallBluetooth() error {
+	err := f.installPackages(f.Packages.Bluetooth)
 	if err != nil {
 		return err
 	}

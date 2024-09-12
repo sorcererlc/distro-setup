@@ -15,23 +15,25 @@ import (
 type FedoraHelper struct {
 	Conf      *types.Config
 	Env       *types.Environment
+	Packages  *types.Packages
 	Log       *log.Log
 	CoprRepos struct {
 		Copr []string `yaml:"copr"`
 	}
 }
 
-func NewFedoraHelper(c *types.Config, e *types.Environment) *FedoraHelper {
+func NewFedoraHelper(c *types.Config, e *types.Environment, p *types.Packages) *FedoraHelper {
 	f := FedoraHelper{
-		Conf: c,
-		Env:  e,
-		Log:  log.NewLog("packages.log"),
+		Conf:     c,
+		Env:      e,
+		Packages: p,
+		Log:      log.NewLog("packages.log"),
 	}
 
 	return &f
 }
 
-func (f *FedoraHelper) SetupPackages(pkg *types.Packages) error {
+func (f *FedoraHelper) SetupDistro() error {
 	err := f.updateDistro()
 	if err != nil {
 		return err
@@ -42,40 +44,26 @@ func (f *FedoraHelper) SetupPackages(pkg *types.Packages) error {
 		return err
 	}
 
-	err = f.removePackages(pkg.Remove)
+	err = f.removePackages(f.Packages.Remove)
 	if err != nil {
 		return err
 	}
 
-	err = f.installRepos(pkg.Repo)
+	err = f.installRepos(f.Packages.Repo)
 	if err != nil {
 		return err
 	}
 
-	p := pkg.Base
-	if f.Conf.Packages.Extras {
-		p = append(p, pkg.Extras...)
-	}
-	if f.Conf.Packages.Sddm {
-		p = append(p, pkg.Sddm...)
-	}
-	if f.Conf.Packages.Bluetooth {
-		p = append(p, pkg.Bluetooth...)
-	}
-	if f.Conf.Packages.Nvidia {
-		p = append(p, pkg.Nvidia...)
-	}
-	p = append(p, pkg.Fonts...)
+	return nil
+}
 
-	if f.Conf.Options.WindowManager == "hyprland" {
-		p = append(p, pkg.Hyprland...)
+func (f *FedoraHelper) InstallBasePackages() error {
+	err := f.installPackages(f.Packages.Base)
+	if err != nil {
+		return err
 	}
 
-	if f.Conf.Options.WindowManager == "sway" {
-		p = append(p, pkg.Sway...)
-	}
-
-	err = f.installPackages(p)
+	err = f.installPackages(f.Packages.Fonts)
 	if err != nil {
 		return err
 	}
@@ -85,16 +73,57 @@ func (f *FedoraHelper) SetupPackages(pkg *types.Packages) error {
 		return err
 	}
 
-	err = f.installAutoCpuFreq(pkg.Git["auto-cpufreq"])
+	err = f.installAutoCpuFreq(f.Packages.Git["auto-cpufreq"])
 	if err != nil {
 		return err
 	}
 
-	err = f.setupNwgLook(pkg.Git["nwg-look"])
+	err = f.setupNwgLook(f.Packages.Git["nwg-look"])
 	if err != nil {
 		return err
 	}
 
+	return nil
+}
+
+func (f *FedoraHelper) InstallExtraPackages() error {
+	err := f.installPackages(f.Packages.Extras)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (f *FedoraHelper) InstallNvidia() error {
+	err := f.installPackages(f.Packages.Nvidia)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (f *FedoraHelper) InstallSddm() error {
+	err := f.installPackages(f.Packages.Sddm)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (f *FedoraHelper) InstallHyprland() error {
+	err := f.installPackages(f.Packages.Hyprland)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (f *FedoraHelper) InstallBluetooth() error {
+	err := f.installPackages(f.Packages.Bluetooth)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

@@ -8,20 +8,45 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-type Pkg struct {
-	Conf *types.Config
-	Env  *types.Environment
-	Log  *log.Log
+type Handler interface {
+	SetupDistro() error
+	InstallBasePackages() error
+	InstallExtraPackages() error
+	InstallNvidia() error
+	InstallSddm() error
+	InstallHyprland() error
+	InstallBluetooth() error
 }
 
-func NewPkg(c *types.Config, e *types.Environment) *Pkg {
+type Pkg struct {
+	Conf    *types.Config
+	Env     *types.Environment
+	Log     *log.Log
+	Handler Handler
+}
+
+func NewPkg(c *types.Config, e *types.Environment) (*Pkg, error) {
 	p := Pkg{
 		Conf: c,
 		Env:  e,
 		Log:  log.NewLog("packages.log"),
 	}
 
-	return &p
+	pkg, err := p.loadPackages(e.OS.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	switch e.OS.Id {
+	case "fedora":
+		p.Handler = NewFedoraHelper(c, e, pkg)
+		break
+	case "arch":
+		p.Handler = NewArchHelper(c, e, pkg)
+		break
+	}
+
+	return &p, nil
 }
 
 func (p *Pkg) loadPackageFile(fs string) (*types.Packages, error) {
@@ -81,28 +106,58 @@ func (p *Pkg) loadPackages(distro string) (*types.Packages, error) {
 	return pkg, nil
 }
 
-func (p *Pkg) SetupPackages() error {
-	pkg, err := p.loadPackages(p.Env.OS.Id)
+func (p *Pkg) SetupDistro() error {
+	err := p.Handler.SetupDistro()
 	if err != nil {
 		return err
 	}
+	return nil
+}
 
-	switch p.Env.OS.Id {
-	case "fedora":
-		d := NewFedoraHelper(p.Conf, p.Env)
-		err := d.SetupPackages(pkg)
-		if err != nil {
-			return err
-		}
-		break
-	case "arch":
-		d := NewArchHelper(p.Conf, p.Env)
-		err := d.SetupPackages(pkg)
-		if err != nil {
-			return err
-		}
-		break
+func (p *Pkg) InstallBasePackages() error {
+	err := p.Handler.InstallBasePackages()
+	if err != nil {
+		return err
 	}
+	return nil
+}
 
+func (p *Pkg) InstallExtraPackages() error {
+	err := p.Handler.InstallExtraPackages()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *Pkg) InstallNvidia() error {
+	err := p.Handler.InstallNvidia()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *Pkg) InstallSddm() error {
+	err := p.Handler.InstallSddm()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *Pkg) InstallHyprland() error {
+	err := p.Handler.InstallHyprland()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *Pkg) InstallBluetooth() error {
+	err := p.Handler.InstallBluetooth()
+	if err != nil {
+		return err
+	}
 	return nil
 }
