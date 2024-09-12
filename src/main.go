@@ -28,6 +28,7 @@ func menu() string {
 	menuItem("7", "Install bluetooth")
 	menuItem("8", "Install flatpak packages")
 	menuItem("9", "Setup shell")
+	menuItem("0", "Install Hyprland plugins. Run this from Hyprland.")
 	menuItem("r", "Reboot")
 	menuItem("q", "Quit")
 
@@ -53,10 +54,14 @@ func main() {
 	conf, err := helper.GetConfig(env)
 	fail(err)
 
+	p, err := packages.NewPkg(conf, env)
+	fail(err)
+
+	dh, err := distro.NewDistroHelper(conf, env)
+	fail(err)
+
 	for {
 		helper.ClearScreen()
-
-		p, err := packages.NewPkg(conf, env)
 
 		c := menu()
 		switch c {
@@ -94,13 +99,14 @@ func main() {
 			fail(err)
 			break
 		case "9":
-			dh, err := distro.NewDistroHelper(conf, env)
-			fail(err)
-
 			helper.ClearScreen()
 			l.Info("Preparing to setup shell")
 
 			err = dh.SetupDistro()
+			fail(err)
+			break
+		case "0":
+			err = dh.SetupHyprland()
 			fail(err)
 			break
 		case "r":
