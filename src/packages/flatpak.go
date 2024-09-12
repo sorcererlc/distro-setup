@@ -60,9 +60,11 @@ func (f *FlatpakHelper) InstallPackages() error {
 		p = append(p, f.Packages.Misc...)
 	}
 
-	err = f.installPackageGroup(p)
-	if err != nil {
-		return err
+	for _, pkg := range p {
+		err := f.installPackage(pkg)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
@@ -93,6 +95,17 @@ func (f *FlatpakHelper) installPackageGroup(g []string) error {
 	if err != nil {
 		f.Log.Error("Install Flatpak packages", err.Error())
 		return err
+	}
+
+	return nil
+}
+
+func (f *FlatpakHelper) installPackage(p string) error {
+	f.Log.Info("Install Flatpak package", p)
+
+	err := helper.Run("flatpak", "install", "-y", p)
+	if err != nil {
+		f.Log.Warn("Install Flatpak package", p, err.Error())
 	}
 
 	return nil

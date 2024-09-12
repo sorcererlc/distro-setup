@@ -18,6 +18,8 @@ base:
   - gnome-system-monitor
   - unzip
   - patch
+  - kate
+  - neovim
   # File manager
   - dolphin
   - ffmpegthumbnailer
@@ -52,6 +54,8 @@ base:
   - xdg-utils
   # UI
   - rofi-wayland
+  # Various dependencies
+  - meson
 
 hyprland:
   - hyprland
@@ -73,14 +77,13 @@ bluetooth:
   - bluez
   - blueman
 
-extras: # TODO find sources for Arch
+extras:
   - flatpak
   - steam
   - lm_sensors
   - celluloid
   - vlc
   - virt-manager
-  - kate
   - darktable
   - openrgb
   - ufw
@@ -89,7 +92,6 @@ extras: # TODO find sources for Arch
   - mc
   - winetricks
   # - android-tools
-  - neovim
   - owncloud-client
   - zoxide
   - qalculate-gtk
@@ -100,7 +102,7 @@ extras: # TODO find sources for Arch
   - goverlay
   - wayvnc
 
-fonts: # TODO find sources for Arch
+fonts:
   - adobe-source-code-pro-fonts
 
 git:
