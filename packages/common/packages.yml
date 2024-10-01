@@ -20,6 +20,7 @@ base:
   - patch
   - kate
   - neovim
+  - duf
   # File manager
   - dolphin
   - ffmpegthumbnailer
