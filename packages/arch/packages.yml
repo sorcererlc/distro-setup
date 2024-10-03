@@ -24,6 +24,7 @@ nvidia:
   - nvidia-utils
   - libva
   - libva-nvidia-driver-git
+  - egl-wayland
 
 bluetooth:
   - bluez-utils
