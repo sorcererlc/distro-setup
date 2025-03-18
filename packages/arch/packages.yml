@@ -19,7 +19,7 @@ sway:
   - xorg-xwayland
 
 nvidia:
-  - nvidia
+  - nvidia-open
   - nvidia-settings
   - nvidia-utils
   - libva

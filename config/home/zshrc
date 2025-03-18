@@ -41,7 +41,8 @@ OMP_THEME="powerlevel10k_classic"
 # Load OhMyPosh and other tools
 eval "$(oh-my-posh init zsh --config $THEME_DIR/$OMP_THEME.omp.json)"
 eval "$(zoxide init zsh)"
-eval "$(mcfly init zsh)"
+# eval "$(mcfly init zsh)"
+eval "$(atuin init zsh)"
 
 if ! zgenom saved; then
   zgenom load zsh-users/zsh-completions
@@ -54,7 +55,8 @@ fi
 alias ll="exa -lh -g --time-style=long-iso --git --icons"
 alias cp="cpg -g"
 alias mv="mvg -g"
-alias cat="bat"
+alias ct="bat"
+alias v="nvim"
 alias vi="nvim"
 alias vim="nvim"
 alias codium="flatpak run com.vscodium.codium "
