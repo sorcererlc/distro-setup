@@ -1,3 +1,5 @@
+## This repository will no longer be maintained in light of GitHub not being an independent company anymore and it's future induction into Microsoft's CoreAI group.
+
 # Linux distro setup utility
 
 ### Purpose
